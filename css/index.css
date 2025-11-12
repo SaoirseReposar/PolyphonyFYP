@@ -1,0 +1,525 @@
+/* =================================
+   Global Styles
+   ================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+    color: #1a1a1a;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* =================================
+   Navigation Bar
+   ================================= */
+
+.navbar-custom {
+    background: rgba(102, 126, 234, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 1rem 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Fixed height only on desktop */
+@media (min-width: 992px) {
+    .navbar-custom {
+        height: 90px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .navbar-custom .container {
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+}
+
+.navbar-brand {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: white !important;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0;
+}
+
+.navbar-logo {
+    height: 150px;
+    width: auto;
+    transition: transform 0.3s ease;
+}
+
+/* Smaller logo on mobile */
+@media (max-width: 991px) {
+    .navbar-logo {
+        height: 100px;
+    }
+
+    .navbar-custom {
+      height: 150px;
+}
+}
+
+.navbar-logo:hover {
+    transform: scale(1.05);
+}
+
+
+.navbar-custom .nav-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 0.5rem 1rem !important;
+    margin: 0 0.25rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.navbar-custom .nav-link:hover {
+    color: white !important;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.navbar-custom .nav-link.active {
+    color: white !important;
+    font-weight: 600;
+}
+
+.btn-get-started {
+    background: white;
+    color: #667eea;
+    font-weight: 600;
+    padding: 0.625rem 1.5rem;
+    border-radius: 25px;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-get-started:hover {
+    background: #f0f0f0;
+    color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Mobile navbar toggle */
+.navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* =================================
+   Hero Section
+   ================================= */
+.hero-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 5rem 0;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+}
+
+.hero-content {
+    padding: 2rem 0;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    opacity: 0.95;
+    margin-bottom: 2.5rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-primary-custom {
+    background: white;
+    color: #667eea;
+    font-weight: 600;
+    padding: 1rem 2.5rem;
+    border-radius: 30px;
+    border: none;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.btn-primary-custom:hover {
+    background: #f0f0f0;
+    color: #667eea;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.btn-secondary-custom {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 2px solid white;
+    font-weight: 600;
+    padding: 1rem 2.5rem;
+    border-radius: 30px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary-custom:hover {
+    background: rgba(255, 255, 255, 0.3);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* =================================
+   Features Section
+   ================================= */
+.features-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 3rem 0 5rem 0;
+}
+
+.feature-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    padding: 2.5rem 2rem;
+    border-radius: 16px;
+    text-align: center;
+    transition: all 0.3s ease;
+    height: 100%;
+    color: white;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.feature-icon {
+    width: 70px;
+    height: 70px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+}
+
+.feature-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.feature-description {
+    font-size: 1rem;
+    opacity: 0.95;
+    margin: 0;
+}
+
+/* =================================
+   How It Works Section
+   ================================= */
+.how-it-works-section {
+    background: #f5f7fa;
+    padding: 5rem 0;
+}
+
+.section-heading {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 0.75rem;
+}
+
+.section-subheading {
+    font-size: 1.125rem;
+    color: #666;
+    margin-bottom: 0;
+}
+
+.step-card {
+    text-align: center;
+    padding: 2rem 1rem;
+}
+
+.step-number {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0 auto 1.5rem;
+}
+
+.step-title {
+    font-size: 1.375rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 1rem;
+}
+
+.step-description {
+    font-size: 1rem;
+    color: #666;
+    line-height: 1.6;
+}
+
+/* =================================
+   Languages Section
+   ================================= */
+.languages-section {
+    background: white;
+    padding: 5rem 0;
+}
+
+.language-card {
+    background: #f8f9fa;
+    padding: 2rem 1rem;
+    border-radius: 12px;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.language-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    background: white;
+}
+
+.language-flag {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.language-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+/* =================================
+   CTA Section
+   ================================= */
+.cta-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 5rem 0;
+}
+
+.cta-heading {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.cta-subheading {
+    font-size: 1.25rem;
+    opacity: 0.95;
+    margin-bottom: 2rem;
+}
+
+.cta-buttons .btn-light {
+    font-weight: 600;
+    padding: 1rem 2.5rem;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+}
+
+.cta-buttons .btn-light:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* =================================
+   Footer
+   ================================= */
+.footer {
+    background: #1a1a1a;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.footer-heading {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.footer-heading-small {
+    color: white;
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.footer-text {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    margin-bottom: 0.5rem;
+}
+
+.footer-links a {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: white;
+}
+
+.footer-divider {
+    border-color: rgba(255, 255, 255, 0.1);
+    margin: 2rem 0 1.5rem;
+}
+
+.footer-copyright {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.875rem;
+    margin: 0;
+}
+
+/* =================================
+   Responsive Design
+   ================================= */
+
+/* Tablets and below */
+@media (max-width: 991px) {
+    .hero-title {
+        font-size: 2.75rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.125rem;
+    }
+    
+    .section-heading {
+        font-size: 2rem;
+    }
+    
+    .cta-heading {
+        font-size: 2rem;
+    }
+    
+    .navbar-custom .nav-link {
+        padding: 0.75rem 1rem !important;
+    }
+    
+    .btn-get-started {
+        margin-top: 1rem;
+        width: 100%;
+    }
+}
+
+/* Mobile phones */
+@media (max-width: 767px) {
+    .hero-section {
+        padding: 3rem 0;
+        min-height: 500px;
+    }
+    
+    .hero-title {
+        font-size: 2.25rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+    }
+    
+    .btn-primary-custom,
+    .btn-secondary-custom {
+        width: 100%;
+        padding: 0.875rem 2rem;
+    }
+    
+    .section-heading {
+        font-size: 1.75rem;
+    }
+    
+    .section-subheading {
+        font-size: 1rem;
+    }
+    
+    .cta-heading {
+        font-size: 1.75rem;
+    }
+    
+    .cta-subheading {
+        font-size: 1rem;
+    }
+    
+    .features-section,
+    .how-it-works-section,
+    .languages-section,
+    .cta-section {
+        padding: 3rem 0;
+    }
+    
+    .feature-card {
+        margin-bottom: 1.5rem;
+    }
+}
+
+/* Small mobile phones */
+@media (max-width: 575px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .navbar-brand {
+        font-size: 1.5rem;
+    }
+    
+    .brand-icon {
+        font-size: 1.5rem;
+    }
+}

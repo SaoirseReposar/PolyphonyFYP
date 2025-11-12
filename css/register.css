@@ -1,0 +1,417 @@
+/* =================================
+   Global Styles
+   ================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+    color: #1a1a1a;
+    line-height: 1.6;
+    background: #f8f9fa;
+}
+
+/* =================================
+   Navigation Bar (Same as Homepage)
+   ================================= */
+.navbar-custom {
+    background: rgba(102, 126, 234, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 1rem 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Fixed height only on desktop */
+@media (min-width: 992px) {
+    .navbar-custom {
+        height: 90px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .navbar-custom .container {
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+}
+
+.navbar-brand {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: white !important;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0;
+}
+
+.navbar-logo {
+    height: 150px;
+    width: auto;
+    transition: transform 0.3s ease;
+}
+
+.navbar-logo:hover {
+    transform: scale(1.05);
+}
+
+.navbar-custom .nav-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 0.5rem 1rem !important;
+    margin: 0 0.25rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.navbar-custom .nav-link:hover {
+    color: white !important;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.navbar-custom .nav-link.active {
+    color: white !important;
+    font-weight: 600;
+}
+
+.btn-get-started {
+    background: white;
+    color: #667eea;
+    font-weight: 600;
+    padding: 0.625rem 1.5rem;
+    border-radius: 25px;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-get-started:hover {
+    background: #f0f0f0;
+    color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Mobile navbar toggle */
+.navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* Smaller logo on mobile */
+@media (max-width: 991px) {
+    .navbar-logo {
+        height: 100px;
+    }
+
+    .navbar-custom {
+        height: 150px;
+    }
+    
+    .navbar-custom .nav-link {
+        padding: 0.75rem 1rem !important;
+    }
+    
+    .btn-get-started {
+        margin-top: 1rem;
+        width: 100%;
+    }
+}
+
+/* =================================
+   Auth Section
+   ================================= */
+.auth-section {
+    min-height: calc(100vh - 160px);
+    padding: 4rem 0;
+    display: flex;
+    align-items: center;
+}
+
+.auth-container {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(102, 126, 234, 0.1);
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 600px;
+}
+
+/* =================================
+   Left Side - Illustration
+   ================================= */
+.auth-left {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-illustration {
+    text-align: center;
+    max-width: 400px;
+}
+
+.illustration-icon {
+    width: 120px;
+    height: 120px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 2rem;
+    padding: 1rem;
+}
+
+.auth-logo-icon {
+    width: 200%;
+    height: 200%;
+    object-fit: contain;
+}
+
+.auth-left-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.auth-left-subtitle {
+    font-size: 1.125rem;
+    opacity: 0.9;
+    margin-bottom: 2.5rem;
+}
+
+.feature-list {
+    text-align: left;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+.feature-item i {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* =================================
+   Right Side - Forms
+   ================================= */
+.auth-right {
+    padding: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-form {
+    width: 100%;
+    max-width: 400px;
+}
+
+.form-title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 0.5rem;
+}
+
+.form-subtitle {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+/* =================================
+   Form Inputs
+   ================================= */
+.form-label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.5rem;
+    font-size: 0.9375rem;
+}
+
+.form-control {
+    padding: 0.75rem 1rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
+}
+
+.form-text {
+    color: #999;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+
+
+/* =================================
+   Buttons
+   ================================= */
+.btn-primary-purple {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    padding: 0.875rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.btn-primary-purple:hover {
+    background: linear-gradient(135deg, #5568d3, #6a3f8f);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+/* =================================
+   Form Switch Text
+   ================================= */
+.form-switch-text {
+    text-align: center;
+    color: #666;
+    font-size: 0.9375rem;
+    margin: 0;
+}
+
+.text-purple {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.text-purple:hover {
+    color: #5568d3;
+    text-decoration: underline;
+}
+
+/* =================================
+   Footer
+   ================================= */
+.footer-minimal {
+    background: white;
+    padding: 2rem 0;
+    border-top: 1px solid #e0e0e0;
+    margin-top: 3rem;
+}
+
+.footer-minimal p {
+    color: #999;
+    font-size: 0.875rem;
+}
+
+/* =================================
+   Responsive Design
+   ================================= */
+
+/* Tablets and below */
+@media (max-width: 991px) {
+    .auth-container {
+        grid-template-columns: 1fr;
+    }
+
+    .auth-left {
+        padding: 2rem;
+        min-height: auto;
+    }
+
+    .auth-left-title {
+        font-size: 1.5rem;
+    }
+
+    .auth-left-subtitle {
+        font-size: 1rem;
+    }
+
+    .illustration-icon {
+        width: 80px;
+        height: 80px;
+        font-size: 2.5rem;
+    }
+
+    .feature-list {
+        display: none;
+    }
+
+    .auth-right {
+        padding: 2rem;
+    }
+}
+
+/* Mobile phones */
+@media (max-width: 767px) {
+    .auth-section {
+        padding: 2rem 0;
+    }
+
+    .auth-container {
+        border-radius: 15px;
+        margin: 0 1rem;
+    }
+
+    .auth-left {
+        padding: 2rem 1.5rem;
+    }
+
+    .auth-right {
+        padding: 2rem 1.5rem;
+    }
+
+    .form-title {
+        font-size: 1.5rem;
+    }
+
+    .form-subtitle {
+        font-size: 0.9375rem;
+    }
+
+    .auth-left-title {
+        font-size: 1.375rem;
+    }
+}
+
+/* Small mobile phones */
+@media (max-width: 575px) {
+    .auth-container {
+        margin: 0 0.5rem;
+    }
+
+    .auth-left,
+    .auth-right {
+        padding: 1.5rem 1rem;
+    }
+
+    .btn-primary-purple {
+        padding: 0.75rem 1.25rem;
+        font-size: 0.9375rem;
+    }
+}

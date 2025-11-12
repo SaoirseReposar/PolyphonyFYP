@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="Your Polyphony Profile" />
+        <meta name="author" content="Polyphony" />
+        <title>Profile - Polyphony</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <!-- Custom CSS -->
+        <link href="css/profile.css" rel="stylesheet" />
+    </head>
+    <body>
+        <!-- Navigation Bar -->
+        <nav class="navbar navbar-expand-lg navbar-custom">
+            <div class="container px-5">
+                <a class="navbar-brand" href="index.html">
+                    <img src="images/PolyphonyLogo2.png" alt="Polyphony Logo" class="navbar-logo">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="learn.html">Learn</a></li>
+                        <li class="nav-item"><a class="nav-link" href="library.html">Song Library</a></li>
+                        <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+                    </ul>
+                    <div class="user-badge ms-lg-3">Minji Kim</div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Profile Section -->
+        <section class="profile-section">
+            <div class="container py-5">
+                <div class="row">
+                    <!-- Sidebar -->
+                    <div class="col-lg-3 mb-4">
+                        <div class="profile-sidebar">
+                            <div class="profile-avatar">
+                                <div class="avatar-circle">MK</div>
+                                <h5 class="mt-3">Minji Kim</h5>
+                            </div>
+                            <hr>
+                            <ul class="profile-menu">
+                                <li class="active">
+                                    <i class="bi bi-person-fill"></i>
+                                    Profile Settings
+                                </li>
+                                <li>
+                                    <i class="bi bi-shield-lock-fill"></i>
+                                    Security
+                                </li>
+                                <li>
+
+                                    <i class="bi bi-palette-fill"></i>
+                                    Preferences
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Main Content -->
+                    <div class="col-lg-9">
+                        <div class="profile-content">
+                            <!-- Profile Information -->
+                            <div class="settings-section">
+                                <h4 class="section-title">
+                                    <i class="bi bi-person-circle me-2"></i>
+                                    Profile Information
+                                </h4>
+                                <form>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="firstName" class="form-label">First Name</label>
+                                            <input type="text" class="form-control" id="firstName" value="Minji">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="lastName" class="form-label">Last Name</label>
+                                            <input type="text" class="form-control" id="lastName" value="Kim">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email Address</label>
+                                        <input type="email" class="form-control" id="email" value="minji.kim@email.com">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="username" class="form-label">Username</label>
+                                        <input type="text" class="form-control" id="username" value="minjikim">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary-purple">Save Changes</button>
+                                </form>
+                            </div>
+
+                            <!-- Change Password -->
+                            <div class="settings-section">
+                                <h4 class="section-title">
+                                    <i class="bi bi-key-fill me-2"></i>
+                                    Change Password
+                                </h4>
+                                <form>
+                                    <div class="mb-3">
+                                        <label for="currentPassword" class="form-label">Current Password</label>
+                                        <input type="password" class="form-control" id="currentPassword" placeholder="Enter current password">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="newPassword" class="form-label">New Password</label>
+                                        <input type="password" class="form-control" id="newPassword" placeholder="Enter new password">
+                                        <small class="form-text">Must be at least 8 characters</small>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                                        <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm new password">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary-purple">Update Password</button>
+                                </form>
+                            </div>
+
+                            <!-- Account Settings -->
+                            <div class="settings-section">
+                                <h4 class="section-title">
+                                    <i class="bi bi-gear-fill me-2"></i>
+                                    Account Settings
+                                </h4>
+                                
+                                <!-- Language Preference -->
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h6>Language Preference</h6>
+                                        <p>Choose your preferred learning language</p>
+                                    </div>
+                                    <select class="form-select setting-select">
+                                        <option>Spanish</option>
+                                        <option>French</option>
+                                        <option>German</option>
+                                        <option selected>Korean</option>
+                                    </select>
+                                </div>
+
+                               
+
+                                <!-- Spotify Connection -->
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h6>Spotify Connection</h6>
+                                        <p>Connect your Spotify account</p>
+                                    </div>
+                                    <button class="btn btn-spotify-small">
+                                        <i class="bi bi-spotify me-2"></i>
+                                        Connect
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Danger Zone -->
+                            <div class="settings-section danger-zone">
+                                <div class="danger-item">
+                                    <div>
+                                        <h6>Delete Account</h6>
+                                        <p>Permanently delete your account and all data</p>
+                                    </div>
+                                    <button class="btn btn-danger">Delete Account</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer-minimal">
+            <div class="container">
+                <p class="text-center mb-0">&copy; 2025 Polyphony. All rights reserved.</p>
+            </div>
+        </footer>
+
+        <!-- Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>
