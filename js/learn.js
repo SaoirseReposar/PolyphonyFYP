@@ -77,6 +77,11 @@ function updateSongHeader() {
     
     // Update page title
     document.title = `${currentSong.title} - Learn - Polyphony`;
+
+    const songHeaderImage = document.querySelector('.song-header-image');
+    if (currentSong.album_art_url && songHeaderImage) {
+        songHeaderImage.innerHTML = `<img src="${currentSong.album_art_url}" alt="${currentSong.title}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">`;
+    }
 }
 
 /**
@@ -97,6 +102,9 @@ function initializeLyrics() {
         lineDiv.dataset.index = index;
         lineDiv.dataset.timestamp = line.timestamp_ms;
         
+        // Create container for original text
+        const originalTextDiv = document.createElement('div');
+        
         // Split line into words and make them clickable
         const words = line.original_text.split(' ');
         words.forEach((word, wordIndex) => {
@@ -107,13 +115,24 @@ function initializeLyrics() {
                 e.stopPropagation();
                 handleWordClick(word, line.original_text);
             };
-            lineDiv.appendChild(wordSpan);
+            originalTextDiv.appendChild(wordSpan);
             
             // Add space after word (except last word)
             if (wordIndex < words.length - 1) {
-                lineDiv.appendChild(document.createTextNode(' '));
+                originalTextDiv.appendChild(document.createTextNode(' '));
             }
         });
+        
+        lineDiv.appendChild(originalTextDiv);
+        
+        // Add translation below the original text (hidden by default with inline style)
+        if (line.translated_text) {
+            const translationDiv = document.createElement('div');
+            translationDiv.className = 'lyric-line-translation';
+            translationDiv.textContent = line.translated_text;
+            translationDiv.style.display = 'none'; // Hide by default with inline style
+            lineDiv.appendChild(translationDiv);
+        }
         
         lyricsPanel.appendChild(lineDiv);
     });
@@ -226,9 +245,13 @@ function updateLyricHighlight() {
         
         if (currentTimeMs >= startTime && currentTimeMs < endTime) {
             if (currentLineIndex !== i) {
-                // Remove active class from all lines
+                // Remove active class and hide translations from all lines
                 document.querySelectorAll('.lyric-line').forEach(line => {
                     line.classList.remove('active');
+                    const translation = line.querySelector('.lyric-line-translation');
+                    if (translation) {
+                        translation.style.display = 'none';
+                    }
                 });
                 
                 // Add active class to current line
@@ -236,6 +259,12 @@ function updateLyricHighlight() {
                 if (currentLine) {
                     currentLine.classList.add('active');
                     currentLine.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    // Show translation for active line
+                    const translation = currentLine.querySelector('.lyric-line-translation');
+                    if (translation) {
+                        translation.style.display = 'block';
+                    }
                 }
                 
                 currentLineIndex = i;
@@ -244,6 +273,7 @@ function updateLyricHighlight() {
         }
     }
 }
+
 
 /**
  * Handle word click
@@ -285,7 +315,6 @@ function displayTranslation(word, translation) {
         <div class="translation-item">
             <div class="translation-word">${word}</div>
             <div class="translation-meaning">${translation.translation}</div>
-            ${translation.context ? `<div class="text-muted small mb-3">${translation.context}</div>` : ''}
             <button class="btn-save-word" onclick="saveWord('${word}', '${translation.translation}', ${translation.id})">
                 <i class="bi bi-bookmark-plus"></i> Save Word
             </button>

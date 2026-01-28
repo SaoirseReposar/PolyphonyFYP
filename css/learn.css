@@ -459,3 +459,16 @@
         padding: 10px 12px;
     }
 }
+
+/* shows english line translation*/
+.lyric-line-translation {
+    color: #999;
+    font-size: 0.95rem;
+    font-style: italic;
+    margin-top: 5px;
+    display: block;
+}
+
+.lyric-line.active .lyric-line-translation {
+    display: block; /* Show when line is active/highlighted */
+}

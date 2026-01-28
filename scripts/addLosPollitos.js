@@ -30,31 +30,29 @@ async function addLosPollitos() {
                 'spanish',
                 'beginner',
                 120000, // 2 minutes
-                null // Add album art URL if you have one
+                'images/spanish1.webp'
             ]
         );
         
         const songId = songResult.rows[0].id;
         console.log(`✓ Song added/updated with ID: ${songId}`);
         
-        // Step 2: Define timestamped lyrics (in milliseconds)
+        // Step 2: Define timestamped lyrics (in SECONDS - will be converted to milliseconds)
+        // Example: { line: 1, time: 12, text: "..." } means the line starts at 12 seconds
         const lyrics = [
-            
-    { time: 12, text: "Los pollitos dicen", translation: "The little chicks say" },
-    { time: 14, text: "Pío, pío, pío", translation: "Peep, peep, peep" },
-    { time: 17, text: "Cuando tienen hambre", translation: "When they are hungry" },
-    { time: 20, text: "Cuando tienen frío", translation: "When they are cold" },
-    { time: 24, text: "La gallina busca", translation: "The hen looks for" },
-    { time: 27, text: "El maíz y el trigo", translation: "Corn and wheat" },
-    { time: 30, text: "Les da la comida", translation: "She gives them food" },
-    { time: 33, text: "Y les presta abrigo", translation: "And gives them shelter" },
-    { time: 37, text: "Bajo sus dos alas", translation: "Under her two wings" },
-    { time: 40, text: "Acurrucaditos", translation: "Snuggled up" },
-    { time: 43, text: "Hasta el otro día", translation: "Until the next day" },
-    { time: 46, text: "Duermen los pollitos", translation: "The little chicks sleep" }
-];
-
-     
+            { line: 1, time: 12, text: "Los pollitos dicen" },
+            { line: 2, time: 14, text: "Pío, pío, pío" },
+            { line: 3, time: 16, text: "Cuando tienen hambre" },
+            { line: 4, time: 19, text: "Cuando tienen frío" },
+            { line: 5, time: 21, text: "La gallina busca" },
+            { line: 6, time: 23, text: "El maíz y el trigo" },
+            { line: 7, time: 26, text: "Les da la comida" },
+            { line: 8, time: 28, text: "Y les presta abrigo" },
+            { line: 9, time: 30, text: "Bajo sus dos alas" },
+            { line: 10, time: 33, text: "Acurrucaditos" },
+            { line: 11, time: 35, text: "Hasta el otro día" },
+            { line: 12, time: 38, text: "Duermen los pollitos" }
+        ];
         
         console.log(`\nTranslating ${lyrics.length} lines from Spanish to English...`);
         
@@ -68,6 +66,7 @@ async function addLosPollitos() {
         for (let i = 0; i < lyrics.length; i++) {
             const lyric = lyrics[i];
             const translation = translations[i];
+            const timestampMs = lyric.time * 1000; // Convert seconds to milliseconds
             
             await db.query(
                 `INSERT INTO lyrics (
@@ -83,10 +82,10 @@ async function addLosPollitos() {
                     timestamp_ms = EXCLUDED.timestamp_ms,
                     original_text = EXCLUDED.original_text,
                     translated_text = EXCLUDED.translated_text`,
-                [songId, lyric.line, lyric.time, lyric.text, translation, 'en']
+                [songId, lyric.line, timestampMs, lyric.text, translation, 'en']
             );
             
-            console.log(`  Line ${lyric.line}: "${lyric.text}" → "${translation}"`);
+            console.log(`  Line ${lyric.line} @ ${lyric.time}s: "${lyric.text}" → "${translation}"`);
         }
         
         console.log('\n✅ Los Pollitos Dicen setup complete!');
