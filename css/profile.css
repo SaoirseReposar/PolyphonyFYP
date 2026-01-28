@@ -82,6 +82,26 @@ body {
     font-size: 0.9375rem;
 }
 
+.btn-get-started {
+    background: white;
+    color: #667eea;
+    font-weight: 600;
+    padding: 0.625rem 1.5rem;
+    border-radius: 25px;
+    border: none;
+    font-size: 0.9375rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-get-started:hover {
+    background: #f0f0f0;
+    color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
 .navbar-toggler {
     border-color: rgba(255, 255, 255, 0.3);
 }
@@ -369,6 +389,38 @@ body {
     background: #b91c1c;
     transform: translateY(-2px);
 }
+
+
+
+/* Logout Button Styling */
+.btn-secondary {
+    background: #6c757d;
+    border: none;
+    padding: 0.625rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
+    color: white;
+}
+
+/* Add spacing between danger items */
+.danger-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem; /* Add spacing between items */
+}
+
+.danger-item:last-child {
+    margin-bottom: 0;
+}
+
 
 /* Footer */
 .footer-minimal {
