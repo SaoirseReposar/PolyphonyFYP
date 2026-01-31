@@ -88,14 +88,14 @@ async function addLosPollitos() {
             console.log(`  Line ${lyric.line} @ ${lyric.time}s: "${lyric.text}" → "${translation}"`);
         }
         
-        console.log('\n✅ Los Pollitos Dicen setup complete!');
+        console.log('\nLos Pollitos Dicen setup complete!');
         console.log(`\nSong ID: ${songId}`);
         console.log(`Total lyrics: ${lyrics.length}`);
         console.log(`\nTest at: http://localhost:3000/learn.html?id=${songId}`);
         
         process.exit(0);
     } catch (error) {
-        console.error('❌ Error:', error);
+        console.error(' Error:', error);
         process.exit(1);
     }
 }

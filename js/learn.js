@@ -142,18 +142,28 @@ function initializeLyrics() {
  * Setup audio player
  */
 function setupAudioPlayer() {
-    // Use local audio file
-audioPlayer.src = `audio/los-pollitos-dicen.mp3`; // relative path from your HTML page
-audioPlayer.load();
+    if (currentSong.audio_url) {
+        audioPlayer.src = currentSong.audio_url;
+    } else {
+        const audioFileName = currentSong.title
+            .toLowerCase()
+            .replace(/\s+/g, '-')
+            .replace(/[^a-z0-9-]/g, '');
+        audioPlayer.src = `audio/${audioFileName}.mp3`;
+    }
+    
+    audioPlayer.load();
 
-
-    // Reset UI
-    document.getElementById('playBtn').innerHTML =
-        '<i class="bi bi-play-fill"></i>';
+    document.getElementById('playBtn').innerHTML = '<i class="bi bi-play-fill"></i>';
 
     audioPlayer.addEventListener('timeupdate', updateProgress);
     audioPlayer.addEventListener('loadedmetadata', updateDuration);
     audioPlayer.addEventListener('ended', onSongEnd);
+    
+    audioPlayer.addEventListener('error', (e) => {
+        console.error('Audio load error - Expected path:', audioPlayer.src);
+        showError('Failed to load audio file.');
+    });
 }
 
 

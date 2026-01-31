@@ -61,6 +61,9 @@ app.get('/profile', isAuthenticated, (req, res) => {
     res.sendFile(path.join(__dirname, 'profile.html'));
 });
 
+app.use('/audio', express.static(path.join(__dirname, 'public/audio')));
+
+
 
 // Registration POST route
 app.post('/register', async (req, res) => {
