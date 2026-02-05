@@ -43,7 +43,7 @@ async function registerUser(userData) {
         const result = await pool.query(
             `INSERT INTO Users (first_name, last_name, username, email, password) 
              VALUES ($1, $2, $3, $4, $5) 
-             RETURNING user_id, username, email`,
+             RETURNING user_id, first_name, last_name, username, email`,
             [firstName, lastName, username, email, hashedPassword]
         );
 

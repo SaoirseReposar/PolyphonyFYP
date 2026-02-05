@@ -5,7 +5,8 @@ const cors = require('cors');
 const querystring = require('querystring');
 const axios = require('axios');
 const { registerUser, loginUser } = require('./auth');
-
+const db = require('./database');
+const translationService = require('./services/translationService');
 const app = express();
 const PORT = 3000;
 
@@ -24,7 +25,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        maxAge: 1000 * 60 * 60 * 24  // 24 hours
+        maxAge: 1000 * 60 * 60 * 24  
     }
 }));
 
@@ -207,6 +208,83 @@ app.get('/api/current-user', (req, res) => {
         });
     }
 });
+
+app.post('/api/translate/word', async (req, res) => {
+    try {
+        const { word, language } = req.body;
+
+        if (!word || !language) {
+            return res.status(400).json({
+                success: false,
+                error: 'Missing word or language'
+            });
+        }
+
+        const cleanedWord = word.replace(/[^\p{L}]/gu, '');
+
+        const translations = await translationService.translateBatch(
+            [cleanedWord],
+            language,
+            'EN-US'
+        );
+
+        res.json({
+            success: true,
+            translation: {
+                id: Date.now(),
+                translation: translations[0]
+            }
+        });
+
+    } catch (error) {
+        console.error('Word translation error:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Translation failed'
+        });
+    }
+});
+
+
+app.get('/api/songs/:id', async (req, res) => {
+    try {
+        const songId = req.params.id;
+
+        const songResult = await db.query(
+            `SELECT * FROM songs WHERE id = $1`,
+            [songId]
+        );
+
+        if (songResult.rows.length === 0) {
+            return res.status(404).json({ success: false, error: 'Song not found' });
+        }
+
+        const song = songResult.rows[0];
+
+        const lyricsResult = await db.query(
+            `SELECT * FROM lyrics WHERE song_id = $1 ORDER BY line_number ASC`,
+            [songId]
+        );
+
+        const lyrics = lyricsResult.rows.map(l => ({
+            line_number: l.line_number,
+            timestamp_ms: l.timestamp_ms,
+            original_text: l.original_text,
+            translated_text: l.translated_text
+        }));
+
+        res.json({
+            success: true,
+            song,
+            lyrics
+        });
+
+    } catch (error) {
+        console.error('Error loading song:', error);
+        res.status(500).json({ success: false, error: 'Failed to load song' });
+    }
+});
+
 
 app.listen(PORT, () => {
     console.log(` Website Running`);

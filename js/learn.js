@@ -1,5 +1,5 @@
 // js/learn.js - Song Learning Page Logic
-const API_BASE_URL = 'http://localhost:4000/api';
+const API_BASE_URL = 'http://localhost:3000/api';
 
 // Global state
 let currentSong = null;
@@ -39,7 +39,11 @@ async function loadSong(songId) {
             throw new Error(data.error);
         }
         
-        currentSong = data.song;
+        currentSong = {
+    ...data.song,
+    lyrics: data.lyrics
+};
+
         
         // Update page UI
         updateSongHeader();
