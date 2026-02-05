@@ -4,7 +4,8 @@ window.addEventListener('load', async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const accessToken = urlParams.get('access_token');
     const refreshToken = urlParams.get('refresh_token');
-    
+    const connectButton = document.querySelector('a[href="/spotify/login"]');
+
     if (accessToken) {
         console.log('Spotify connected successfully');
         
@@ -17,6 +18,11 @@ window.addEventListener('load', async () => {
         window.history.replaceState({}, document.title, window.location.pathname);
         
         alert('Successfully connected to Spotify');
+
+        const connectButton = document.querySelector('a[href="/spotify/login"]');
+        if (connectButton && isSpotifyConnected()) {
+        connectButton.textContent = 'Go to Spotify';
+    }
         
         try {
             const response = await fetch('https://api.spotify.com/v1/me', {
@@ -28,6 +34,7 @@ window.addEventListener('load', async () => {
             console.error('Error fetching user data:', error);
         }
     }
+
 });
 
 function isSpotifyConnected() {

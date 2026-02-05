@@ -26,12 +26,7 @@ app.use('/api', songRoutes);
 
 // Start server
 app.listen(PORT, () => {
-    console.log(`
-╔═══════════════════════════════════════╗
-║   🎵 Polyphony API Server Running    ║
-║   Port: ${PORT}                        ║
-╚═══════════════════════════════════════╝
-    `);
+    console.log(`API server running`);
     
     // Test database connection
     db.query('SELECT NOW()')

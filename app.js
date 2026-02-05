@@ -205,13 +205,6 @@ app.get('/api/current-user', (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`
-╔═══════════════════════════════════════╗
-║   🎵 Polyphony Website Running       ║
-║   Port: ${PORT}                        ║
-║   URL: http://127.0.0.1:${PORT}       ║
-╚═══════════════════════════════════════╝
-    `);
-    console.log('\n⚙️  Spotify OAuth Integration Active');
-    console.log('📍 Add this to Spotify Dashboard: http://127.0.0.1:3000/spotify/callback\n');
+    console.log(` Website Running`);
+  
 });
