@@ -329,8 +329,8 @@ function displayTranslation(word, translation) {
         <div class="translation-item">
             <div class="translation-word">${word}</div>
             <div class="translation-meaning">${translation.translation}</div>
-            <button class="btn-save-word" onclick="saveWord('${word}', '${translation.translation}', ${translation.id})">
-                <i class="bi bi-bookmark-plus"></i> Save Word
+            <button class="btn-save-word" onclick="saveWord('${word}', '${translation.translation}')">
+            <i class="bi bi-bookmark-plus"></i> Save Word
             </button>
         </div>
     `;
@@ -339,30 +339,17 @@ function displayTranslation(word, translation) {
 /**
  * Save word to vocabulary
  */
-async function saveWord(word, translationText, wordId) {
-    try {
-        const response = await fetch(`${API_BASE_URL}/words/save`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                user_id: 1, // Replace with actual user ID from auth
-                word_id: wordId,
-                song_id: currentSong.id
-            })
-        });
-        
-        const data = await response.json();
-        
-        if (data.success) {
-            savedWords.add(`${word} = ${translationText}`);
-            updateSavedWordsDisplay();
-            showNotification('Word saved!');
-        }
-    } catch (error) {
-        console.error('Error saving word:', error);
-        showNotification('Failed to save word', 'error');
-    }
+function saveWord(word, translationText) {
+    // Add to local savedWords set
+    savedWords.add(`${word} = ${translationText}`);
+    
+    // Update display
+    updateSavedWordsDisplay();
+    
+    // Show a notification
+    showNotification('Word saved!');
 }
+
 
 /**
  * Update saved words display
