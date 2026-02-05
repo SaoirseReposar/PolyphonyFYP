@@ -41,7 +41,7 @@ function isAuthenticated(req, res, next) {
 // SPOTIFY OAUTH ROUTES
 
 // Redirect user to Spotify authorization page
-app.get('/spotify/login', (req, res) => {
+app.get('/spotify/login', isAuthenticated, (req, res) => {
     const scope = 'user-read-private user-read-email playlist-read-private playlist-read-collaborative';
     
     const authUrl = 'https://accounts.spotify.com/authorize?' +
@@ -55,7 +55,7 @@ app.get('/spotify/login', (req, res) => {
     res.redirect(authUrl);
 });
 
-app.get('/spotify/callback', async (req, res) => {
+app.get('/spotify/callback', isAuthenticated, async (req, res) => {
     const code = req.query.code || null;
 
     if (!code) {
@@ -117,6 +117,10 @@ app.get('/register', (req, res) => {
 
 app.get('/profile', isAuthenticated, (req, res) => {
     res.sendFile(path.join(__dirname, 'profile.html'));
+});
+
+app.get('/spotifyplaylists.html', isAuthenticated, (req, res) => {
+    res.sendFile(path.join(__dirname, 'spotifyplaylists.html'));
 });
 
 app.use('/audio', express.static(path.join(__dirname, 'public/audio')));
