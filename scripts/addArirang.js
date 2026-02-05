@@ -5,7 +5,6 @@ async function addArirang() {
     try {
         console.log('Adding 아리랑 (Arirang)...\n');
 
-        // 1️⃣ Insert / update song
         const songResult = await db.query(
             `INSERT INTO songs (
                 spotify_track_id,
@@ -26,12 +25,12 @@ async function addArirang() {
                 updated_at = CURRENT_TIMESTAMP
             RETURNING id`,
             [
-                '1m7WeqX04UA4Znl3Mcs3yk', // Spotify track ID
+                '1m7WeqX04UA4Znl3Mcs3yk', 
                 '아리랑 (Arirang)',
                 'Traditional Folk Song',
                 'korean',
                 'intermediate',
-                150000, // ~2.5 minutes
+                150000, 
                 'images/korean2.jpeg',
                 'audio/arirang.mp3'
             ]
@@ -40,13 +39,11 @@ async function addArirang() {
         const songId = songResult.rows[0].id;
         console.log(`✓ Song added/updated with ID: ${songId}`);
 
-        // 2️⃣ Remove old lyrics
         await db.query(
             `DELETE FROM lyrics WHERE song_id = $1`,
             [songId]
         );
 
-        // 3️⃣ Define lyrics
         const lyrics = [
             { line: 1, time: 19.5, text: "아리랑, 아리랑, 아라리요..." },
             { line: 2, time: 27, text: "아리랑 고개로 넘어간다." },
@@ -56,7 +53,6 @@ async function addArirang() {
 
         console.log(`\nTranslating ${lyrics.length} lines from Korean to English...`);
 
-        // 4️⃣ Translate lyrics
         const textsToTranslate = lyrics.map(l => l.text);
         const translations = await translationService.translateBatch(
             textsToTranslate,
@@ -66,7 +62,6 @@ async function addArirang() {
 
         console.log('✓ Translations received\n');
 
-        // 5️⃣ Insert lyrics
         for (let i = 0; i < lyrics.length; i++) {
             const lyric = lyrics[i];
             const translation = translations[i];

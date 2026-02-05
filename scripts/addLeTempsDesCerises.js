@@ -5,7 +5,6 @@ async function addLeTempsDesCerises() {
     try {
         console.log('Adding Le Temps des Cerises...\n');
 
-        // 1️⃣ Insert/update the song
         const songResult = await db.query(
             `INSERT INTO songs (
                 spotify_track_id,
@@ -26,27 +25,25 @@ async function addLeTempsDesCerises() {
                 updated_at = CURRENT_TIMESTAMP
             RETURNING id`,
             [
-                '5UvDGgwPWPTy4hMSIq2BEl',  // Spotify track ID
+                '5UvDGgwPWPTy4hMSIq2BEl',  
                 "Le Temps des Cerises",
                 "Jean-Baptiste Clément, Antoine Renard",
                 "french",
                 "advanced",
-                240000, // ~4 minutes
+                240000,
                 'images/french3.jpeg',
-                'audio/cerises.mp3' // local audio file
+                'audio/cerises.mp3' 
             ]
         );
 
         const songId = songResult.rows[0].id
         console.log(`✓ Song added/updated with ID: ${songId}`);
 
-        // 2️⃣ Remove old lyrics
         await db.query(
             `DELETE FROM lyrics WHERE song_id = $1`,
             [songId]
         );
 
-        // 3️⃣ Define lyrics with line numbers and placeholder timestamps
         const lyrics = [
             { line: 1, time: 0, text: "Quand nous chanterons le temps des cerises" },
             { line: 2, time: 6.5, text: "Et gai rossignol et merle moqueur" },
@@ -79,7 +76,6 @@ async function addLeTempsDesCerises() {
 
         console.log('✓ Translations received\n');
 
-        // 5️⃣ Insert lyrics into database, mapping back translations
         let translationIndex = 0;
         for (let lyric of lyrics) {
             let translation;
@@ -87,7 +83,7 @@ async function addLeTempsDesCerises() {
                 translation = translations[translationIndex];
                 translationIndex++;
             } else {
-                translation = lyric.text; // keep punctuation-only or non-translatable lines
+                translation = lyric.text; 
             }
 
             const timestampMs = lyric.time * 1000;

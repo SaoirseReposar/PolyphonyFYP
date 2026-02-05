@@ -5,7 +5,6 @@ async function addThreeBearsSong() {
     try {
         console.log('Adding 곰 세 마리 (Three Bears Song)...\n');
 
-        // 1️⃣ Insert/update the song
         const songResult = await db.query(
             `INSERT INTO songs (
                 spotify_track_id,
@@ -26,27 +25,26 @@ async function addThreeBearsSong() {
                 updated_at = CURRENT_TIMESTAMP
             RETURNING id`,
             [
-                '7konkcoUay4HcsgK6Ikm7l',  // Spotify track ID
+                '7konkcoUay4HcsgK6Ikm7l',  
                 '곰 세 마리 (Three Bears Song)',
                 'Nursery Song',
                 'korean',
                 'beginner',
-                90000, // ~1.5 minutes
+                90000, 
                 'images/korean1.jpeg',
-                'audio/three-bears-song.mp3' // local audio file
+                'audio/three-bears-song.mp3' 
             ]
         );
 
         const songId = songResult.rows[0].id;
         console.log(`✓ Song added/updated with ID: ${songId}`);
 
-        // 2️⃣ Remove old lyrics
+
         await db.query(
             `DELETE FROM lyrics WHERE song_id = $1`,
             [songId]
         );
 
-        // 3️⃣ Define lyrics with line numbers and placeholder timestamps
         const lyrics = [
             { line: 1, time: 8, text: "곰세마리가" },
             { line: 2, time: 10, text: "한집에있어" },
@@ -61,7 +59,6 @@ async function addThreeBearsSong() {
 
         console.log(`\nTranslating ${lyrics.length} lines from Korean to English...`);
 
-        // 4️⃣ Prepare batch for translation (skip lines with only non-letter characters)
         const textsToTranslate = lyrics.map(l =>
             /[가-힣a-zA-Z]/.test(l.text) ? l.text : null
         ).filter(t => t !== null);
@@ -74,7 +71,6 @@ async function addThreeBearsSong() {
 
         console.log('✓ Translations received\n');
 
-        // 5️⃣ Insert lyrics into database, mapping back translations
         let translationIndex = 0;
         for (let lyric of lyrics) {
             let translation;
@@ -82,7 +78,7 @@ async function addThreeBearsSong() {
                 translation = translations[translationIndex];
                 translationIndex++;
             } else {
-                translation = lyric.text; // keep sound-only lines
+                translation = lyric.text; 
             }
 
             const timestampMs = lyric.time * 1000;

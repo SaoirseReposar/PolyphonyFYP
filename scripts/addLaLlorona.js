@@ -30,9 +30,9 @@ async function addLaLlorona() {
                 'Traditional Folk Song',
                 'spanish',
                 'advanced',
-                240000, // ~4 minutes (adjust if needed)
+                240000, 
                 'images/spanish3.jpeg',
-                'audio/la-llorona.mp3' // 👈 local audio file
+                'audio/la-llorona.mp3' 
             ]
         );
 

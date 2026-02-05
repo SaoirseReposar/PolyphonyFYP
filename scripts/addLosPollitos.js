@@ -1,4 +1,3 @@
-// scripts/addLosPollitos.js - Add Los Pollitos Dicen (song + lyrics)
 const db = require('../database');
 const translationService = require('../services/translationService');
 
@@ -6,7 +5,6 @@ async function addLosPollitos() {
     try {
         console.log('Adding Los Pollitos Dicen...\n');
         
-        // Step 1: Add or update song
         const songResult = await db.query(
             `INSERT INTO songs (
                 spotify_track_id, 
@@ -24,12 +22,12 @@ async function addLosPollitos() {
                 updated_at = CURRENT_TIMESTAMP
             RETURNING id`,
             [
-                '3vkq9XlqVqIxFPHCBLbLOF', // Replace with actual Spotify track ID if different
+                '3vkq9XlqVqIxFPHCBLbLOF', 
                 'Los Pollitos Dicen',
                 'Ismael Parraguez',
                 'spanish',
                 'beginner',
-                120000, // 2 minutes
+                120000, 
                 'images/spanish1.webp'
             ]
         );
@@ -37,8 +35,6 @@ async function addLosPollitos() {
         const songId = songResult.rows[0].id;
         console.log(`✓ Song added/updated with ID: ${songId}`);
         
-        // Step 2: Define timestamped lyrics (in SECONDS - will be converted to milliseconds)
-        // Example: { line: 1, time: 12, text: "..." } means the line starts at 12 seconds
         const lyrics = [
             { line: 1, time: 12, text: "Los pollitos dicen" },
             { line: 2, time: 14, text: "Pío, pío, pío" },
@@ -56,17 +52,15 @@ async function addLosPollitos() {
         
         console.log(`\nTranslating ${lyrics.length} lines from Spanish to English...`);
         
-        // Step 3: Translate all lyrics in batch (more efficient)
         const textsToTranslate = lyrics.map(l => l.text);
         const translations = await translationService.translateBatch(textsToTranslate, 'spanish', 'EN-US');
         
         console.log('✓ Translations received\n');
         
-        // Step 4: Insert lyrics with translations
         for (let i = 0; i < lyrics.length; i++) {
             const lyric = lyrics[i];
             const translation = translations[i];
-            const timestampMs = lyric.time * 1000; // Convert seconds to milliseconds
+            const timestampMs = lyric.time * 1000; 
             
             await db.query(
                 `INSERT INTO lyrics (
@@ -100,7 +94,6 @@ async function addLosPollitos() {
     }
 }
 
-// Run if executed directly
 if (require.main === module) {
     addLosPollitos();
 }

@@ -5,7 +5,6 @@ async function addAuClairDeLaLune() {
     try {
         console.log('Adding Au Clair de la Lune...\n');
 
-        // 1️⃣ Insert/update the song
         const songResult = await db.query(
             `INSERT INTO songs (
                 spotify_track_id,
@@ -26,27 +25,25 @@ async function addAuClairDeLaLune() {
                 updated_at = CURRENT_TIMESTAMP
             RETURNING id`,
             [
-                '0f5o0EhrqLg8MQQ4jWJWxF',  // Spotify track ID
+                '0f5o0EhrqLg8MQQ4jWJWxF',  
                 'Au Clair de la Lune',
                 'Traditional Folk Song',
                 'french',
                 'intermediate',
-                180000, // ~3 minutes
+                180000, 
                 'images/french2.jpeg',
-                'audio/clairdelune.mp3' // local audio file
+                'audio/clairdelune.mp3' 
             ]
         );
 
         const songId = songResult.rows[0].id;
         console.log(`✓ Song added/updated with ID: ${songId}`);
 
-        // 2️⃣ Remove old lyrics
         await db.query(
             `DELETE FROM lyrics WHERE song_id = $1`,
             [songId]
         );
 
-        // 3️⃣ Define lyrics with line numbers and placeholder timestamps
         const lyrics = [
             { line: 1, time: 5.5, text: "Au clair de la lune, mon ami Pierrot," },
             { line: 2, time: 11.5, text: "Prête-moi ta plume, pour écrire un mot." },
@@ -60,7 +57,6 @@ async function addAuClairDeLaLune() {
 
         console.log(`\nTranslating ${lyrics.length} lines from French to English...`);
 
-        // 4️⃣ Prepare batch for translation (skip lines with only punctuation)
         const textsToTranslate = lyrics.map(l =>
             /[a-zA-ZÀ-ÿ]/.test(l.text) ? l.text.replace(/[«»]/g, '') : null
         ).filter(t => t !== null);
@@ -73,7 +69,6 @@ async function addAuClairDeLaLune() {
 
         console.log('✓ Translations received\n');
 
-        // 5️⃣ Insert lyrics into database, mapping back translations
         let translationIndex = 0;
         for (let lyric of lyrics) {
             let translation;
@@ -81,7 +76,7 @@ async function addAuClairDeLaLune() {
                 translation = translations[translationIndex];
                 translationIndex++;
             } else {
-                translation = lyric.text; // keep punctuation-only lines
+                translation = lyric.text; 
             }
 
             const timestampMs = lyric.time * 1000;

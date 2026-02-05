@@ -118,8 +118,6 @@ for (let lyric of lyrics) {
     console.log(`Line ${lyric.line} @ ${lyric.time}s: "${lyric.text}" → "${translation}"`);
 }
 
-
-
         console.log('\n✓ Frère Jacques setup complete!');
         console.log(`Song ID: ${songId}`);
         console.log(`Total lyrics: ${lyrics.length}`);
