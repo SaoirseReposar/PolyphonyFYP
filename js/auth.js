@@ -11,6 +11,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const switchToLoginLink = document.getElementById('switchToLoginLink');
     const switchToRegisterLink = document.getElementById('switchToRegisterLink');
 
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('clear_storage') === 'true') {
+        localStorage.clear();
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
     // Add event listeners for form switching
     switchToLoginLink.addEventListener('click', function(e) {
         e.preventDefault();
@@ -91,6 +97,7 @@ async function handleRegistration(e) {
         if (result.success) {
             // Show success message
             showAlert(result.message, 'success');
+            localStorage.clear();
             // Redirect to profile page after short delay
             setTimeout(() => {
                 window.location.href = result.redirectUrl;
@@ -132,6 +139,7 @@ async function handleLogin(e) {
         if (result.success) {
             // Show success message
             showAlert(result.message, 'success');
+            localStorage.clear();
             // Redirect to profile page after short delay
             setTimeout(() => {
                 window.location.href = result.redirectUrl;
