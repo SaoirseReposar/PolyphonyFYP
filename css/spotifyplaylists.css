@@ -207,3 +207,27 @@ body {
     background: #5568d3;
     color: white;
 }
+
+.track-status {
+    margin-left: auto;
+    padding-left: 15px;
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+}
+
+.track-status .text-success {
+    color: #28a745;
+}
+
+.track-status .text-muted {
+    color: #6c757d;
+}
+
+.track-item {
+    transition: background-color 0.2s ease;
+}
+
+.track-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}

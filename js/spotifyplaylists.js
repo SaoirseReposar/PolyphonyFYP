@@ -11,25 +11,34 @@ const playlistDescription = document.getElementById('playlistDescription');
 let currentPlaylists = [];
 
 window.addEventListener('load', async () => {
-    const token = localStorage.getItem('spotify_access_token');
+    const userResponse = await fetch('/api/current-user');
+    const userData = await userResponse.json();
+    
+    if (!userData.success) {
+        showError();
+        return;
+    }
+    
+    const userId = userData.user.user_id;
+    const token = localStorage.getItem(`spotify_access_token_${userId}`);
     
     if (!token) {
         showError();
         return;
     }
     
-    await loadPlaylists(token);
+    await loadPlaylists(token, userId);
 });
 
-async function loadPlaylists(token) {
+async function loadPlaylists(token, userId) {
     try {
         const response = await fetch('https://api.spotify.com/v1/me/playlists?limit=50', {
             headers: { 'Authorization': `Bearer ${token}` }
         });
         
         if (response.status === 401) {
-            localStorage.removeItem('spotify_access_token');
-            localStorage.removeItem('spotify_refresh_token');
+            localStorage.removeItem(`spotify_access_token_${userId}`);
+            localStorage.removeItem(`spotify_refresh_token_${userId}`);
             window.location.href = 'index.html';
             return;
         }
@@ -77,7 +86,16 @@ function displayPlaylists(playlists) {
 }
 
 async function loadTracks(playlist) {
-    const token = localStorage.getItem('spotify_access_token');
+    const userResponse = await fetch('/api/current-user');
+    const userData = await userResponse.json();
+    
+    if (!userData.success) {
+        trackList.innerHTML = '<p style="text-align: center; color: #999;">Failed to load tracks</p>';
+        return;
+    }
+    
+    const userId = userData.user.user_id;
+    const token = localStorage.getItem(`spotify_access_token_${userId}`);
     
     playlistTitle.textContent = playlist.name;
     playlistDescription.textContent = `${playlist.tracks.total} songs`;
@@ -113,6 +131,7 @@ function displayTracks(items) {
         const track = item.track;
         const trackDiv = document.createElement('div');
         trackDiv.className = 'track-item';
+        trackDiv.style.cursor = 'pointer';
         
         const image = track.album.images && track.album.images.length > 0 
             ? track.album.images[track.album.images.length - 1].url 
@@ -128,10 +147,60 @@ function displayTracks(items) {
                 <div class="track-artist">${artists}</div>
             </div>
             <div class="track-duration">${duration}</div>
+            <div class="track-status">
+                <div class="spinner-border spinner-border-sm" role="status"></div>
+            </div>
         `;
         
+        trackDiv.onclick = () => handleTrackClick(track, trackDiv);
+        
         trackList.appendChild(trackDiv);
+        
+        checkIfSongExists(track.id, trackDiv);
     });
+}
+
+async function checkIfSongExists(spotifyTrackId, trackDiv) {
+    try {
+        console.log('Checking song:', spotifyTrackId);
+        const response = await fetch(`http://localhost:4000/api/songs/spotify/${spotifyTrackId}`);
+        const data = await response.json();
+        console.log('Response for', spotifyTrackId, ':', data);
+        
+        const statusDiv = trackDiv.querySelector('.track-status');
+        
+        if (data.success && data.song) {
+            console.log('Song found! Setting hasLyrics to true');
+            statusDiv.innerHTML = '<i class="bi bi-check-circle-fill text-success"></i>';
+            trackDiv.dataset.songId = data.song.id;
+            trackDiv.dataset.hasLyrics = 'true';
+        } else {
+            console.log('Song not found, setting hasLyrics to false');
+            statusDiv.innerHTML = '<i class="bi bi-plus-circle text-muted"></i>';
+            trackDiv.dataset.hasLyrics = 'false';
+        }
+    } catch (error) {
+        console.error('Error checking song:', error);
+        const statusDiv = trackDiv.querySelector('.track-status');
+        statusDiv.innerHTML = '<i class="bi bi-question-circle text-muted"></i>';
+        trackDiv.dataset.hasLyrics = 'false';
+    }
+}
+
+async function handleTrackClick(track, trackDiv) {
+    const hasLyrics = trackDiv.dataset.hasLyrics === 'true';
+    const songId = trackDiv.dataset.songId;
+    
+    if (hasLyrics && songId) {
+        window.location.href = `learn.html?id=${songId}`;
+    } else {
+        alert(
+            `"${track.name}" doesn't have lyrics yet.\n\n` +
+            `You can add it using:\n` +
+            `node scripts/checkLRCLIB.js "${track.name}" "${track.artists[0].name}"\n\n` +
+            `Or create a manual script for it.`
+        );
+    }
 }
 
 function formatDuration(ms) {

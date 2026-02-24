@@ -5,9 +5,7 @@ const db = require('../database');
 const translationService = require('../services/translationService');
 const spotifyService = require('../services/spotifyService');
 
-/**
- * GET /api/songs - Get all songs
- */
+
 router.get('/songs', async (req, res) => {
     try {
         const result = await db.query(
@@ -20,14 +18,11 @@ router.get('/songs', async (req, res) => {
     }
 });
 
-/**
- * GET /api/songs/:id - Get a single song with lyrics
- */
+
 router.get('/songs/:id', async (req, res) => {
     try {
         const { id } = req.params;
         
-        // Get song info
         const songResult = await db.query(
             'SELECT * FROM songs WHERE id = $1',
             [id]
@@ -37,7 +32,6 @@ router.get('/songs/:id', async (req, res) => {
             return res.status(404).json({ success: false, error: 'Song not found' });
         }
         
-        // Get lyrics
         const lyricsResult = await db.query(
             'SELECT * FROM lyrics WHERE song_id = $1 ORDER BY line_number',
             [id]
@@ -53,14 +47,46 @@ router.get('/songs/:id', async (req, res) => {
     }
 });
 
-/**
- * POST /api/songs - Create a new song
- */
+
+router.get('/songs/spotify/:spotifyTrackId', async (req, res) => {
+    try {
+        const { spotifyTrackId } = req.params;
+        
+        const songResult = await db.query(
+            `SELECT s.*, 
+                    (SELECT COUNT(*) FROM lyrics WHERE song_id = s.id) as lyrics_count
+             FROM songs s 
+             WHERE s.spotify_track_id = $1`,
+            [spotifyTrackId]
+        );
+        
+        if (songResult.rows.length === 0) {
+            return res.json({ success: false, message: 'Song not found' });
+        }
+        
+        const song = songResult.rows[0];
+        
+        res.json({
+            success: true,
+            song: {
+                id: song.id,
+                title: song.title,
+                artist: song.artist,
+                has_lyrics: parseInt(song.lyrics_count) > 0
+            }
+        });
+    } catch (error) {
+        console.error('Error checking song:', error);
+        res.status(500).json({ success: false, error: 'Failed to check song' });
+    }
+});
+
+
+
 router.post('/songs', async (req, res) => {
     try {
         const { title, artist, language, difficulty, spotify_track_id } = req.body;
         
-        // Get Spotify track info
         let spotifyData = null;
         if (spotify_track_id) {
             spotifyData = await spotifyService.getTrackInfo(spotify_track_id);
@@ -88,15 +114,12 @@ router.post('/songs', async (req, res) => {
     }
 });
 
-/**
- * POST /api/songs/:id/lyrics - Add lyrics to a song (with auto-translation)
- */
+
 router.post('/songs/:id/lyrics', async (req, res) => {
     try {
         const { id } = req.params;
-        const { lyrics } = req.body; // Array of { line_number, timestamp_ms, text }
+        const { lyrics } = req.body; 
         
-        // Get song to know source language
         const songResult = await db.query('SELECT language FROM songs WHERE id = $1', [id]);
         if (songResult.rows.length === 0) {
             return res.status(404).json({ success: false, error: 'Song not found' });
@@ -104,14 +127,11 @@ router.post('/songs/:id/lyrics', async (req, res) => {
         
         const sourceLang = songResult.rows[0].language;
         
-        // Extract all text for batch translation
         const textsToTranslate = lyrics.map(l => l.text);
         
-        // Translate all lines in batch (more efficient than one-by-one)
         console.log(`Translating ${textsToTranslate.length} lines from ${sourceLang} to English...`);
         const translations = await translationService.translateBatch(textsToTranslate, sourceLang, 'EN-US');
         
-        // Insert lyrics with translations
         const insertedLyrics = [];
         for (let i = 0; i < lyrics.length; i++) {
             const lyric = lyrics[i];
@@ -143,17 +163,13 @@ router.post('/songs/:id/lyrics', async (req, res) => {
     }
 });
 
-/**
- * POST /api/translate/word - Translate a single word
- */
+
 router.post('/translate/word', async (req, res) => {
     try {
         const { word, language, sentence } = req.body;
         
-        // Clean the word (remove punctuation)
         const cleanWord = word.toLowerCase().replace(/[.,!?;¿¡]/g, '').trim();
         
-        // Check if translation exists in cache
         const cacheResult = await db.query(
             `SELECT * FROM word_translations 
              WHERE word = $1 AND source_language = $2 AND target_language = 'en'`,
@@ -161,7 +177,6 @@ router.post('/translate/word', async (req, res) => {
         );
         
         if (cacheResult.rows.length > 0) {
-            // Update usage count
             await db.query(
                 'UPDATE word_translations SET usage_count = usage_count + 1 WHERE id = $1',
                 [cacheResult.rows[0].id]
@@ -174,7 +189,6 @@ router.post('/translate/word', async (req, res) => {
             });
         }
         
-        // Translate word
         const translationData = await translationService.translateWord(
             cleanWord, 
             language, 
@@ -182,7 +196,7 @@ router.post('/translate/word', async (req, res) => {
             'EN-US'
         );
         
-        // Store in cache
+e
         const insertResult = await db.query(
             `INSERT INTO word_translations (word, source_language, target_language, translation, context)
              VALUES ($1, $2, $3, $4, $5)
@@ -201,9 +215,7 @@ router.post('/translate/word', async (req, res) => {
     }
 });
 
-/**
- * POST /api/words/save - Save a word to user's vocabulary
- */
+
 router.post('/words/save', async (req, res) => {
     try {
         const { user_id, word_id, song_id } = req.body;
@@ -213,7 +225,7 @@ router.post('/words/save', async (req, res) => {
              VALUES ($1, $2, $3)
              ON CONFLICT DO NOTHING
              RETURNING *`,
-            [user_id || 1, word_id, song_id] // Default user_id to 1 for now
+            [user_id || 1, word_id, song_id] 
         );
         
         res.json({ success: true, saved_word: result.rows[0] });
@@ -223,9 +235,7 @@ router.post('/words/save', async (req, res) => {
     }
 });
 
-/**
- * GET /api/words/saved - Get user's saved words
- */
+
 router.get('/words/saved', async (req, res) => {
     try {
         const { user_id } = req.query;
@@ -253,9 +263,7 @@ router.get('/words/saved', async (req, res) => {
     }
 });
 
-/**
- * GET /api/spotify/track/:trackId - Get Spotify track info
- */
+
 router.get('/spotify/track/:trackId', async (req, res) => {
     try {
         const { trackId } = req.params;
@@ -267,9 +275,7 @@ router.get('/spotify/track/:trackId', async (req, res) => {
     }
 });
 
-/**
- * GET /api/translation/usage - Get DeepL API usage stats
- */
+
 router.get('/translation/usage', async (req, res) => {
     try {
         const usage = await translationService.getUsage();

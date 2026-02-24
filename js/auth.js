@@ -97,7 +97,6 @@ async function handleRegistration(e) {
         if (result.success) {
             // Show success message
             showAlert(result.message, 'success');
-            localStorage.clear();
             // Redirect to profile page after short delay
             setTimeout(() => {
                 window.location.href = result.redirectUrl;
@@ -139,7 +138,6 @@ async function handleLogin(e) {
         if (result.success) {
             // Show success message
             showAlert(result.message, 'success');
-            localStorage.clear();
             // Redirect to profile page after short delay
             setTimeout(() => {
                 window.location.href = result.redirectUrl;
