@@ -1,5 +1,5 @@
 // js/learn.js - Song Learning Page Logic
-const API_BASE_URL = 'http://localhost:3000/api';
+const API_BASE_URL = '/api';
 
 // Global state
 let currentSong = null;
@@ -339,15 +339,35 @@ function displayTranslation(word, translation) {
 /**
  * Save word to vocabulary
  */
-function saveWord(word, translationText) {
-    // Add to local savedWords set
+async function saveWord(word, translationText) {
+    // Add to local display immediately (optimistic update)
+    word = word.replace(/[^\p{L}]/gu, '');
     savedWords.add(`${word} = ${translationText}`);
-    
-    // Update display
     updateSavedWordsDisplay();
-    
-    // Show a notification
-    showNotification('Word saved!');
+
+    // Persist to database
+    try {
+        const response = await fetch('/api/dashboard/saved-words', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                word: word,
+                translation: translationText,
+                song_id: currentSong.id
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            showNotification('Word saved!', 'success');
+        } else {
+            showNotification('Could not save word. Are you logged in?', 'error');
+        }
+    } catch (error) {
+        console.error('Save word error:', error);
+        showNotification('Failed to save word.', 'error');
+    }
 }
 
 

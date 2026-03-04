@@ -16,6 +16,16 @@
     margin: 0;
 }
 
+.current-lang-pill {
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.4);
+    color: white;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    backdrop-filter: blur(4px);
+}
 
 .dashboard-section {
     background: #f5f7fa;
@@ -25,8 +35,8 @@
 .stat-card {
     background: white;
     border-radius: 16px;
-    padding: 1.75rem 1.5rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+    padding: 2rem 1.5rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
     text-align: center;
     transition: all 0.3s ease;
     height: 100%;
@@ -34,7 +44,7 @@
 
 .stat-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 15px 35px rgba(102, 126, 234, 0.2);
+    box-shadow: 0 15px 35px rgba(102,126,234,0.2);
 }
 
 .stat-icon {
@@ -51,11 +61,11 @@
 }
 
 .stat-value {
-    font-size: 2.25rem;
+    font-size: 2.5rem;
     font-weight: 700;
     color: #1a1a1a;
     line-height: 1;
-    margin-bottom: 0.35rem;
+    margin-bottom: 0.4rem;
 }
 
 .stat-label {
@@ -67,7 +77,7 @@
 .chart-card {
     background: white;
     border-radius: 16px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -96,78 +106,37 @@
     flex-grow: 1;
 }
 
-.donut-chart-wrapper {
-    position: relative;
-    width: 150px;
-    height: 150px;
-    flex-shrink: 0;
-}
-
-.donut-chart {
-    width: 150px;
-    height: 150px;
-}
-
-.donut-center {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.donut-total {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #1a1a1a;
-    line-height: 1;
-}
-
-.donut-label {
-    font-size: 0.75rem;
-    color: #999;
-}
-
-.donut-legend {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-}
-
-.legend-item {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.legend-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    flex-shrink: 0;
-}
-
-.legend-text {
-    font-size: 0.9rem;
-    color: #444;
-    flex-grow: 1;
-}
-
-.legend-pct {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: #667eea;
-}
-
 .line-chart-wrapper {
     width: 100%;
-    height: 200px;
+    position: relative;
 }
 
-.line-chart {
-    width: 100%;
-    height: 100%;
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #5a6fd6 0%, #6a3f94 100%);
+    border: none;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.35);
+}
+
+.btn-outline-primary {
+    border: 2px solid #667eea;
+    color: #667eea;
+    font-weight: 600;
+    background: transparent;
+}
+
+.btn-outline-primary:hover {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: transparent;
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.35);
 }
 
 .recent-song-item {
@@ -179,13 +148,17 @@
     transition: background 0.2s ease;
 }
 
+.recent-song-item:last-child {
+    border-bottom: none;
+}
+
 .recent-song-item:hover {
     background: #fafafa;
 }
 
 .recent-song-icon {
-    width: 42px;
-    height: 42px;
+    width: 44px;
+    height: 44px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border-radius: 10px;
     display: flex;
@@ -205,40 +178,19 @@
     font-size: 0.9375rem;
     font-weight: 600;
     color: #1a1a1a;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.2rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
 .recent-song-meta {
-    display: flex;
-    gap: 0.4rem;
-    flex-wrap: wrap;
-}
-
-.recent-song-score {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    flex-shrink: 0;
-}
-
-.score-label {
-    font-size: 0.75rem;
-    color: #bbb;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.score-value {
-    font-size: 1.125rem;
-    font-weight: 700;
-    color: #667eea;
+    font-size: 0.8125rem;
+    color: #999;
 }
 
 .badge {
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     padding: 0.3rem 0.65rem;
     border-radius: 20px;
     font-weight: 600;
@@ -246,122 +198,17 @@
 
 .badge-language {
     background: #f0f0f0;
-    color: #1a1a1a;
+    color: #444;
 }
 
-.badge-difficulty {
-    color: white;
-}
-
-.difficulty-beginner {
-    background: #10b981;
-}
-
-.difficulty-intermediate {
-    background: #f59e0b;
-}
-
-.difficulty-advanced {
-    background: #ef4444;
-}
-
-.spotify-icon {
-    width: 72px;
-    height: 72px;
-    background: #1DB954;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    color: white;
-}
-
-.spotify-desc {
-    font-size: 0.9375rem;
-    color: #888;
-    line-height: 1.6;
-    margin-bottom: 1.5rem;
-}
-
-.btn-spotify {
-    background: #1DB954;
-    color: white;
-    font-weight: 600;
-    padding: 0.75rem 1.75rem;
-    border-radius: 12px;
-    border: none;
-    transition: all 0.3s ease;
-    font-size: 0.9375rem;
-}
-
-.btn-spotify:hover {
-    background: #17a349;
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(29, 185, 84, 0.35);
-}
-
-@media (max-width: 991px) {
-    .dashboard-header {
-        padding: 2rem 0 1.5rem 0;
-    }
-
-    .dashboard-title {
-        font-size: 1.75rem;
-    }
-}
-
-@media (max-width: 767px) {
-    .dashboard-title {
-        font-size: 1.5rem;
-    }
-
-    .dashboard-subtitle {
-        font-size: 0.9375rem;
-    }
-
-    .stat-value {
-        font-size: 1.875rem;
-    }
-
-    .dashboard-section {
-        padding: 2rem 0 3rem 0;
-    }
-
-    .donut-chart-wrapper {
-        width: 120px;
-        height: 120px;
-    }
-
-    .donut-chart {
-        width: 120px;
-        height: 120px;
-    }
-}
-
-@media (max-width: 575px) {
-    .dashboard-title {
-        font-size: 1.35rem;
-    }
-
-    .user-avatar {
-        width: 44px;
-        height: 44px;
-        font-size: 1.4rem;
-    }
-
-    .chart-card-body {
-        padding: 1.25rem;
-    }
-
-    .recent-song-item {
-        padding: 0.875rem 1.25rem;
-    }
-}
+.badge-difficulty { color: white; }
+.difficulty-beginner     { background: #10b981; }
+.difficulty-intermediate { background: #f59e0b; }
+.difficulty-advanced     { background: #ef4444; }
 
 .saved-words-table {
     border-collapse: collapse;
+    width: 100%;
 }
 
 .saved-words-table thead tr {
@@ -376,6 +223,7 @@
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: #667eea;
+    white-space: nowrap;
 }
 
 .saved-words-table tbody tr {
@@ -392,7 +240,7 @@
 }
 
 .saved-words-table tbody td {
-    padding: 1rem 1.75rem;
+    padding: 0.9rem 1.75rem;
     font-size: 0.9375rem;
     color: #444;
     vertical-align: middle;
@@ -412,16 +260,158 @@
 .song-cell {
     color: #667eea !important;
     font-weight: 500;
+    font-size: 0.875rem !important;
 }
 
-.song-cell i {
-    opacity: 0.7;
+.date-cell {
+    color: #bbb !important;
+    font-size: 0.8125rem !important;
+}
+
+.saved-words-table tbody td:last-child {
+    width: 48px;
+    text-align: center;
+    padding: 0 0.75rem;
+    vertical-align: middle;
+    line-height: 1;
+}
+
+.btn-remove-word {
+    background: none;
+    border: none;
+    color: #bbb;
+    padding: 0.4rem 0.5rem;
+    border-radius: 6px;
+    transition: all 0.2s;
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-remove-word:hover {
+    color: #888;
+    background: #f0f0f0;
+}
+
+.quiz-modal-content {
+    border-radius: 20px;
+    border: none;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+}
+
+.quiz-progress-bar {
+    height: 6px;
+    background: #f0f0f0;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+}
+
+.quiz-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    border-radius: 3px;
+    transition: width 0.4s ease;
+}
+
+.quiz-word-display {
+    text-align: center;
+    padding: 2rem 1rem;
+}
+
+.quiz-word {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 0.5rem;
+}
+
+.quiz-song-hint {
+    font-size: 0.875rem;
+    color: #aaa;
+}
+
+.quiz-options {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+.quiz-option {
+    width: 100%;
+    text-align: left;
+    padding: 0.875rem 1.25rem;
+    border: 2px solid #eee;
+    border-radius: 12px;
+    background: white;
+    color: #333;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.quiz-option:hover:not(:disabled) {
+    border-color: #667eea;
+    background: #f8f9ff;
+    color: #667eea;
+}
+
+.quiz-option.correct {
+    border-color: #10b981;
+    background: #f0fdf4;
+    color: #10b981;
+}
+
+.quiz-option.wrong {
+    border-color: #ef4444;
+    background: #fff0f0;
+    color: #ef4444;
+}
+
+.quiz-result {
+    text-align: center;
+    padding: 1.5rem 1rem;
+}
+
+.quiz-score-circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.25rem auto;
+    color: white;
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+.quiz-score-label {
+    font-size: 1rem;
+    color: #888;
+    margin-bottom: 1.5rem;
+}
+
+@media (max-width: 991px) {
+    .dashboard-header { padding: 2rem 0 1.5rem 0; }
+    .dashboard-title { font-size: 1.75rem; }
 }
 
 @media (max-width: 767px) {
+    .dashboard-title { font-size: 1.5rem; }
+    .stat-value { font-size: 2rem; }
+    .dashboard-section { padding: 2rem 0 3rem 0; }
     .saved-words-table thead th,
-    .saved-words-table tbody td {
-        padding: 0.75rem 1rem;
-        font-size: 0.875rem;
-    }
+    .saved-words-table tbody td { padding: 0.75rem 1rem; font-size: 0.875rem; }
+    .recent-song-item { padding: 0.875rem 1.25rem; }
+    .chart-card-body { padding: 1.25rem; }
+}
+
+@media (max-width: 575px) {
+    .dashboard-title { font-size: 1.35rem; }
 }

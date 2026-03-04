@@ -9,6 +9,8 @@ const db = require('./database');
 const translationService = require('./services/translationService');
 const app = express();
 const PORT = 3000;
+const dashboardRoutes = require('./routes/dashboardRoutes');
+
 
 
 const SPOTIFY_CLIENT_ID = '5c74a6f691cc4c1cad6c5e8926fbf40d';
@@ -30,6 +32,7 @@ app.use(session({
 }));
 
 app.use(express.static(__dirname));
+app.use('/api/dashboard', dashboardRoutes);
 
 function isAuthenticated(req, res, next) {
     if (req.session.user) {
@@ -259,6 +262,15 @@ app.get('/api/songs/:id', async (req, res) => {
             return res.status(404).json({ success: false, error: 'Song not found' });
         }
 
+if (req.session.user) {
+    db.query(
+        `INSERT INTO user_song_progress (user_id, song_id, last_accessed)
+         VALUES ($1, $2, NOW())
+         ON CONFLICT (user_id, song_id) DO UPDATE SET last_accessed = NOW()`,
+        [req.session.user.user_id, songId]
+    ).catch(err => console.error('Progress tracking error:', err));
+}
+
         const song = songResult.rows[0];
 
         const lyricsResult = await db.query(
@@ -279,6 +291,7 @@ app.get('/api/songs/:id', async (req, res) => {
             lyrics
         });
 
+
     } catch (error) {
         console.error('Error loading song:', error);
         res.status(500).json({ success: false, error: 'Failed to load song' });
@@ -289,4 +302,19 @@ app.get('/api/songs/:id', async (req, res) => {
 app.listen(PORT, () => {
     console.log(` Website Running`);
   
+});
+
+app.post('/api/dashboard/saved-words', isAuthenticated, async (req, res) => {
+    const { song_id, word, translation } = req.body;
+    const userId = req.session.user.user_id;
+    try {
+        await db.query(
+            `INSERT INTO saved_words (user_id, song_id, word, translation)
+             VALUES ($1, $2, $3, $4)`,
+            [userId, song_id, word, translation]
+        );
+        res.json({ success: true });
+    } catch (err) {
+        res.status(500).json({ success: false, message: 'Failed to save word' });
+    }
 });
