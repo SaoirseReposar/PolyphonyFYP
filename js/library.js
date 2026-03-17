@@ -3,6 +3,23 @@
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
     
+    // Initialize - run filter once on page load
+    updateFilterButtonText();
+    filterSongs();
+
+    document.querySelectorAll('a[href*="learn.html"]').forEach(btn => {
+        btn.addEventListener('click', async function(e) {
+            e.preventDefault();
+            const dest = this.getAttribute('href');
+            const res = await fetch('/api/current-user');
+            const data = await res.json();
+            window.location.href = data.success ? dest : '/register';
+        });
+    });
+
+
+    
+    
     // Get all song cards
     const songCards = document.querySelectorAll('.song-card');
     
@@ -176,4 +193,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize - run filter once on page load
     updateFilterButtonText();
     filterSongs();
+
+    
 });
+
+
+

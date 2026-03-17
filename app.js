@@ -31,7 +31,7 @@ app.use(session({
     }
 }));
 
-app.use(express.static(__dirname));
+
 app.use('/api/dashboard', dashboardRoutes);
 
 function isAuthenticated(req, res, next) {
@@ -107,7 +107,7 @@ app.get('/index.html', (req, res) => {
     res.redirect('/');
 });
 
-app.get('/learn.html', (req, res) => {
+app.get('/learn.html', isAuthenticated, (req, res) => {
     res.sendFile(path.join(__dirname, 'learn.html'));
 });
 
@@ -127,7 +127,11 @@ app.get('/spotifyplaylists.html', isAuthenticated, (req, res) => {
     res.sendFile(path.join(__dirname, 'spotifyplaylists.html'));
 });
 
+
+
+
 app.use('/audio', express.static(path.join(__dirname, 'public/audio')));
+app.use(express.static(__dirname));
 
 app.post('/register', async (req, res) => {
     const { firstName, surname, username, email, password, confirmPassword } = req.body;
