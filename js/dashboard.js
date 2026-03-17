@@ -114,7 +114,6 @@
         const loading = document.getElementById('savedWordsLoading');
         const empty = document.getElementById('savedWordsEmpty');
         const tableWrapper = document.getElementById('savedWordsTableWrapper');
-        const quizBtn = document.getElementById('quizAllBtn');
         const filterSelect = document.getElementById('filterSong');
 
         try {
@@ -148,7 +147,7 @@
             });
 
             tableWrapper.style.display = 'block';
-            quizBtn.style.display = 'inline-flex';
+            document.getElementById('vocabActionBtns').style.display = 'flex';
             renderWordsTable(allSavedWords);
             renderVocabChart(allSavedWords);
 
@@ -400,4 +399,92 @@
         return arr;
     }
 
+
+let fcWords = [];
+let fcIndex = 0;
+let fcFlipped = false;
+
+window.openFlashcards = function () {
+    const source = filteredWords.length > 0 ? filteredWords : allSavedWords;
+    if (source.length === 0) {
+        alert('You need at least one saved word to use flashcards!');
+        return;
+    }
+    fcWords = shuffle([...source]);
+    fcIndex = 0;
+    fcFlipped = false;
+    const modal = new bootstrap.Modal(document.getElementById('flashcardModal'));
+    modal.show();
+    renderFlashcard();
+};
+
+function renderFlashcard() {
+    const body = document.getElementById('flashcardBody');
+    const word = fcWords[fcIndex];
+    const total = fcWords.length;
+    const progress = (fcIndex / total) * 100;
+
+    body.innerHTML = `
+        <div class="fc-progress-bar"><div class="fc-progress-fill" style="width:${progress}%"></div></div>
+        <div class="fc-counter">${fcIndex + 1} / ${total}</div>
+        <div class="fc-scene" id="fcScene" onclick="flipCard()">
+            <div class="fc-card" id="fcCard">
+                <div class="fc-face fc-front">
+                    <div class="fc-word">${escHtml(word.word)}</div>
+                    <div class="fc-song"><i class="bi bi-music-note me-1"></i>${escHtml(word.song_title || 'a song')}</div>
+                </div>
+                <div class="fc-face fc-back">
+                    <div class="fc-hint">Translation</div>
+                    <div class="fc-translation">${escHtml(word.translation || '—')}</div>
+                    <div class="fc-word-small">${escHtml(word.word)}</div>
+                </div>
+            </div>
+        </div>
+        <div class="fc-nav">
+            <button class="btn btn-outline-secondary btn-sm fc-btn" onclick="fcPrev()" ${fcIndex === 0 ? 'disabled' : ''}>
+                <i class="bi bi-arrow-left me-1"></i>Prev
+            </button>
+            <button class="btn btn-outline-secondary btn-sm fc-btn" onclick="flipCard()">
+                <i class="bi bi-arrow-repeat me-1"></i>Flip
+            </button>
+            ${fcIndex < total - 1
+                ? `<button class="btn btn-primary btn-sm fc-btn" onclick="fcNext()">Next<i class="bi bi-arrow-right ms-1"></i></button>`
+                : `<button class="btn btn-success btn-sm fc-btn" onclick="fcDone()">Done<i class="bi bi-check2 ms-1"></i></button>`
+            }
+        </div>
+    `;
+    fcFlipped = false;
+}
+
+window.flipCard = function () {
+    const card = document.getElementById('fcCard');
+    if (!card) return;
+    fcFlipped = !fcFlipped;
+    card.classList.toggle('is-flipped', fcFlipped);
+};
+
+window.fcNext = function () {
+    if (fcIndex < fcWords.length - 1) { fcIndex++; renderFlashcard(); }
+};
+
+window.fcPrev = function () {
+    if (fcIndex > 0) { fcIndex--; renderFlashcard(); }
+};
+
+window.fcDone = function () {
+    const body = document.getElementById('flashcardBody');
+    body.innerHTML = `
+        <div class="fc-done">
+            <div class="fc-done-icon">🎉</div>
+            <p class="fw-bold mb-1">All done!</p>
+            <p class="text-muted small mb-3">You reviewed ${fcWords.length} word${fcWords.length !== 1 ? 's' : ''}.</p>
+            <div class="d-flex gap-2 justify-content-center">
+                <button class="btn btn-primary btn-sm" onclick="openFlashcards()">Study Again</button>
+                <button class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    `;
+};
+
 })();
+

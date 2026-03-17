@@ -415,3 +415,153 @@
 @media (max-width: 575px) {
     .dashboard-title { font-size: 1.35rem; }
 }
+
+.flashcard-modal-content {
+    border-radius: 20px;
+    border: none;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+}
+
+.fc-progress-bar {
+    height: 6px;
+    background: #f0f0f0;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+}
+
+.fc-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    border-radius: 3px;
+    transition: width 0.4s ease;
+}
+
+.fc-counter {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #aaa;
+    margin-bottom: 1.25rem;
+}
+
+.fc-scene {
+    width: 100%;
+    height: 200px;
+    perspective: 900px;
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+}
+
+.fc-card {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.55s cubic-bezier(0.4, 0.2, 0.2, 1);
+    border-radius: 16px;
+}
+
+.fc-card.is-flipped {
+    transform: rotateY(180deg);
+}
+
+.fc-face {
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.fc-front {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.fc-back {
+    background: #f8f9ff;
+    border: 2px solid #eeefff;
+    color: #1a1a1a;
+    transform: rotateY(180deg);
+}
+
+.fc-hint {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.65;
+    margin-bottom: 0.75rem;
+}
+
+.fc-word {
+    font-size: 2.25rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+}
+
+.fc-song {
+    font-size: 0.8rem;
+    opacity: 0.75;
+}
+
+.fc-translation {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #667eea;
+    margin-bottom: 0.4rem;
+    line-height: 1.1;
+}
+
+.fc-word-small {
+    font-size: 0.85rem;
+    color: #aaa;
+}
+
+.fc-nav {
+    display: flex;
+    gap: 0.6rem;
+    justify-content: center;
+}
+
+.fc-btn {
+    min-width: 80px;
+    font-weight: 600;
+}
+
+.fc-done {
+    text-align: center;
+    padding: 1.5rem 1rem;
+}
+
+.fc-done-icon {
+    font-size: 3rem;
+    margin-bottom: 0.75rem;
+}
+
+.saved-words-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.saved-words-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.saved-words-controls .form-select {
+    max-width: 180px;
+}
+
