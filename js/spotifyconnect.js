@@ -29,11 +29,13 @@ window.addEventListener('load', async () => {
         
         window.history.replaceState({}, document.title, window.location.pathname);
         
-        alert('✓ Successfully connected to Spotify!');
+        alert('Successfully connected to Spotify');
         
         if (connectButton) {
             connectButton.textContent = 'Go to Spotify';
             connectButton.href = 'spotifyplaylists.html';
+            connectButton.style.background = '#1DB954';
+            connectButton.style.color = 'white';
         }
         
         try {
@@ -51,8 +53,10 @@ window.addEventListener('load', async () => {
         
         if (isValid) {
             if (connectButton) {
-                connectButton.textContent = 'Go to Spotify';
-                connectButton.href = 'spotifyplaylists.html';
+            connectButton.textContent = 'Go to Spotify';
+            connectButton.href = 'spotifyplaylists.html';
+            connectButton.style.background = '#1DB954';
+            connectButton.style.color = 'white';
             }
         } else {
             localStorage.removeItem(`spotify_access_token_${currentUserId}`);
