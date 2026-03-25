@@ -1,8 +1,6 @@
-
 document.addEventListener('DOMContentLoaded', function() {
     checkUserStatus();
 });
-
 
 async function checkUserStatus() {
     try {
@@ -20,9 +18,6 @@ async function checkUserStatus() {
     }
 }
 
-/**
- * @param {Object} user - User object from the server
- */
 function updateNavbarForLoggedInUser(user) {
     const navbarEnd = document.querySelector('.navbar-nav').parentElement;
     const getStartedBtn = navbarEnd.querySelector('.btn-get-started');
@@ -37,10 +32,15 @@ function updateNavbarForLoggedInUser(user) {
 
     const navLinks = document.querySelectorAll('.navbar-nav .nav-item a');
     navLinks.forEach(link => {
-        if (link.getAttribute('href') === 'learn.html' || link.getAttribute('href') === 'dashboard.html') {
+        if (link.getAttribute('href') === 'library.html' || link.getAttribute('href') === 'dashboard.html') {
             link.closest('.nav-item').style.display = '';
         }
     });
+
+    const startLearningBtn = document.getElementById('startLearningBtn');
+    if (startLearningBtn) {
+        startLearningBtn.href = 'library.html';
+    }
 }
 
 function updateNavbarForLoggedOutUser() {
@@ -50,4 +50,9 @@ function updateNavbarForLoggedOutUser() {
             link.closest('.nav-item').style.display = 'none';
         }
     });
+
+    const startLearningBtn = document.getElementById('startLearningBtn');
+    if (startLearningBtn) {
+        startLearningBtn.href = 'register.html';
+    }
 }

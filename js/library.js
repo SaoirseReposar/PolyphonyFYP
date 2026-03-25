@@ -2,10 +2,7 @@
 
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
-    
-    // Initialize - run filter once on page load
-    updateFilterButtonText();
-    filterSongs();
+
 
     document.querySelectorAll('a[href*="learn.html"]').forEach(btn => {
         btn.addEventListener('click', async function(e) {
