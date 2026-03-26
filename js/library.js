@@ -15,6 +15,68 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 
+    let currentUserId = null;
+
+const spotifyBtn = document.getElementById('connectSpotifyBtn');
+
+async function initSpotifyButton() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const accessToken = urlParams.get('access_token');
+    const refreshToken = urlParams.get('refresh_token');
+
+    const userResponse = await fetch('/api/current-user');
+    const userData = await userResponse.json();
+
+    if (!userData.success) {
+        spotifyBtn.onclick = () => window.location.href = '/register';
+        return;
+    }
+
+    currentUserId = userData.user.user_id;
+
+    if (accessToken) {
+        localStorage.setItem(`spotify_access_token_${currentUserId}`, accessToken);
+        if (refreshToken) localStorage.setItem(`spotify_refresh_token_${currentUserId}`, refreshToken);
+        window.history.replaceState({}, document.title, window.location.pathname);
+        setConnectedState();
+    } else {
+        const token = localStorage.getItem(`spotify_access_token_${currentUserId}`);
+        if (token) {
+            const valid = await checkTokenValidity(token);
+            if (valid) {
+                setConnectedState();
+            } else {
+                localStorage.removeItem(`spotify_access_token_${currentUserId}`);
+                setDisconnectedState();
+            }
+        } else {
+            setDisconnectedState();
+        }
+    }
+}
+
+function setConnectedState() {
+    spotifyBtn.textContent = 'Go to Spotify';
+    spotifyBtn.style.background = '#1DB954';
+    spotifyBtn.style.color = 'white';
+    spotifyBtn.onclick = () => window.location.href = '/spotifyplaylists.html';
+}
+
+function setDisconnectedState() {
+    spotifyBtn.innerHTML = '<i class="bi bi-spotify me-2"></i> Connect Spotify';
+    spotifyBtn.onclick = () => window.location.href = '/spotify/login';
+}
+
+async function checkTokenValidity(token) {
+    try {
+        const res = await fetch('https://api.spotify.com/v1/me', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        return res.ok;
+    } catch { return false; }
+}
+
+initSpotifyButton();
     
     
     // Get all song cards

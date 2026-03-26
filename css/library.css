@@ -364,3 +364,56 @@
         font-size: 1rem;
     }
 }
+
+/* 
+   Spotify Connect Bar */
+.spotify-connect-bar {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.08), rgba(30, 215, 96, 0.08));
+    border: 1.5px solid rgba(30, 215, 96, 0.3);
+    border-radius: 14px;
+    padding: 1rem 1.5rem;
+    display: inline-flex;  /* key change — shrinks to content width */
+}
+
+.spotify-icon-wrap {
+    width: 44px;
+    height: 44px;
+    background: #1ed760;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    color: white;
+    flex-shrink: 0;
+}
+
+.spotify-bar-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #1a1a1a;
+}
+
+.spotify-bar-subtitle {
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.btn-spotify {
+    background: #1ed760;
+    color: #000;
+    font-weight: 600;
+    border-radius: 50px;
+    padding: 0.5rem 1.4rem;
+    font-size: 0.9rem;
+    border: none;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.btn-spotify:hover {
+    background: #17b84f;
+    color: #000;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(30, 215, 96, 0.35);
+}

@@ -46,6 +46,8 @@ function isAuthenticated(req, res, next) {
 
 // Redirect user to Spotify authorization page
 app.get('/spotify/login', isAuthenticated, (req, res) => {
+    req.session.spotifyConnectOrigin = req.headers.referer?.includes('library') ? '/library.html' : '/';
+
     const scope = 'user-read-private user-read-email playlist-read-private playlist-read-collaborative';
     
     const authUrl = 'https://accounts.spotify.com/authorize?' +
@@ -84,6 +86,8 @@ app.get('/spotify/callback', isAuthenticated, async (req, res) => {
 
         const { access_token, refresh_token } = response.data;
 
+        const redirectPage = req.session.spotifyConnectOrigin || '/';
+        delete req.session.spotifyConnectOrigin;
         res.redirect('/?' + 
             querystring.stringify({
                 access_token: access_token,
@@ -114,6 +118,11 @@ app.get('/learn.html', isAuthenticated, (req, res) => {
 app.get('/library.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'library.html'));
 });
+
+app.get('/library', (req, res) => {
+    res.sendFile(path.join(__dirname, 'library.html'));
+});
+
 
 app.get('/register', (req, res) => {
     res.sendFile(path.join(__dirname, 'register.html'));

@@ -56,3 +56,9 @@ function updateNavbarForLoggedOutUser() {
         startLearningBtn.href = 'register.html';
     }
 }
+
+document.querySelectorAll('.navbar-nav .nav-item a').forEach(link => {
+    if (link.getAttribute('href')?.includes('learn')) {
+        link.closest('.nav-item').style.display = 'none';
+    }
+});
