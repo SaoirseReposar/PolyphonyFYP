@@ -163,7 +163,7 @@ function displayTracks(items) {
 async function checkIfSongExists(spotifyTrackId, trackDiv) {
     try {
         console.log('Checking song:', spotifyTrackId);
-        const response = await fetch(`http://localhost:4000/api/songs/spotify/${spotifyTrackId}`);
+        const response = await fetch(`/api/songs/spotify/${spotifyTrackId}`);
         const data = await response.json();
         console.log('Response for', spotifyTrackId, ':', data);
         
