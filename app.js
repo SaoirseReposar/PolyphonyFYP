@@ -8,14 +8,13 @@ const { registerUser, loginUser } = require('./auth');
 const db = require('./database');
 const translationService = require('./services/translationService');
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const dashboardRoutes = require('./routes/dashboardRoutes');
 
 
-
-const SPOTIFY_CLIENT_ID = '5c74a6f691cc4c1cad6c5e8926fbf40d';
-const SPOTIFY_CLIENT_SECRET = 'ae4f8d98cb1e4ef287d32f3816bcae3b';
-const SPOTIFY_REDIRECT_URI = 'http://127.0.0.1:3000/spotify/callback';
+const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
+const SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
+secret: process.env.SESSION_SECRET || 'secretkey'
 
 
 app.use(express.urlencoded({ extended: true }));
@@ -134,6 +133,10 @@ app.get('/profile', isAuthenticated, (req, res) => {
 
 app.get('/spotifyplaylists.html', isAuthenticated, (req, res) => {
     res.sendFile(path.join(__dirname, 'spotifyplaylists.html'));
+});
+
+app.get('/dashboard.html', isAuthenticated, (req, res) => {
+    res.sendFile(path.join(__dirname, 'dashboard.html'));
 });
 
 
@@ -312,10 +315,12 @@ if (req.session.user) {
 });
 
 
-app.listen(PORT, () => {
-    console.log(` Website Running`);
-  
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Polyphony website running at http://localhost:${PORT}`);
+  });
+}
+
 
 app.post('/api/dashboard/saved-words', isAuthenticated, async (req, res) => {
     const { song_id, word, translation } = req.body;
@@ -331,3 +336,5 @@ app.post('/api/dashboard/saved-words', isAuthenticated, async (req, res) => {
         res.status(500).json({ success: false, message: 'Failed to save word' });
     }
 });
+
+module.exports = app; 

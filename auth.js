@@ -39,7 +39,6 @@ async function registerUser(userData) {
         // Hash the password for security
         const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
 
-        // Insert new user into database
         const result = await pool.query(
             `INSERT INTO Users (first_name, last_name, username, email, password) 
              VALUES ($1, $2, $3, $4, $5) 
