@@ -14,7 +14,7 @@ const dashboardRoutes = require('./routes/dashboardRoutes');
 
 const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 const SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
-secret: process.env.SESSION_SECRET || 'secretkey'
+const SPOTIFY_REDIRECT_URI = process.env.SPOTIFY_REDIRECT_URI || 'http://127.0.0.1:3000/spotify/callback';
 
 
 app.use(express.urlencoded({ extended: true }));
@@ -22,14 +22,13 @@ app.use(express.json());
 app.use(cors());
 
 app.use(session({
-    secret: 'secretkey',  
+    secret: process.env.SESSION_SECRET || 'secretkey',
     resave: false,
     saveUninitialized: false,
     cookie: {
-        maxAge: 1000 * 60 * 60 * 24  
+        maxAge: 1000 * 60 * 60 * 24
     }
 }));
-
 
 app.use('/api/dashboard', dashboardRoutes);
 
