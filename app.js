@@ -263,6 +263,22 @@ app.post('/api/translate/word', async (req, res) => {
     }
 });
 
+app.get('/api/songs/spotify/:spotifyTrackId', async (req, res) => {
+    try {
+        const { spotifyTrackId } = req.params;
+        const result = await db.query(
+            `SELECT * FROM songs WHERE spotify_track_id = $1`,
+            [spotifyTrackId]
+        );
+        if (result.rows.length === 0) {
+            return res.json({ success: false, song: null });
+        }
+        res.json({ success: true, song: result.rows[0] });
+    } catch (error) {
+        console.error('Error finding song by spotify ID:', error);
+        res.status(500).json({ success: false, error: 'Server error' });
+    }
+});
 
 app.get('/api/songs/:id', async (req, res) => {
     try {
