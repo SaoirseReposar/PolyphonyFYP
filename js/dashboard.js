@@ -354,10 +354,10 @@
         const body = document.getElementById('quizBody');
         const pct = Math.round((quizScore / quizWords.length) * 100);
         const message = pct === 100
-            ? 'Perfect score! 🎉'
+            ? 'Perfect score! '
             : pct >= 70
-                ? 'Great work! Keep it up 💪'
-                : 'Keep practising — you\'ll get there! 📖';
+                ? 'Great work! Keep it up '
+                : 'Keep practising — you\'ll get there! ';
 
         body.innerHTML = `
             <div class="quiz-result">

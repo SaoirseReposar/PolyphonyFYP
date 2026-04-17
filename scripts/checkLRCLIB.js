@@ -15,7 +15,7 @@ async function checkLRCLIB() {
     const result = await lrclibService.getSyncedLyrics(trackName, artistName);
     
     if (result && result.syncedLyrics) {
-        console.log('✅ Synced lyrics found!');
+        console.log(' Synced lyrics found!');
         console.log(`   Track: ${result.trackName}`);
         console.log(`   Artist: ${result.artistName}`);
         console.log(`   Album: ${result.albumName || 'N/A'}`);
@@ -29,7 +29,7 @@ async function checkLRCLIB() {
         console.log('\nTo import, run:');
         console.log(`   node scripts/importFromLRCLIB.js "${trackName}" "${artistName}" LANGUAGE DIFFICULTY SPOTIFY_ID ALBUM_ART`);
     } else {
-        console.log('❌ No synced lyrics found in LRCLIB');
+        console.log(' No synced lyrics found in LRCLIB');
         console.log('\nYou will need to add lyrics manually.');
         console.log('Use the manual script template for this song.');
     }

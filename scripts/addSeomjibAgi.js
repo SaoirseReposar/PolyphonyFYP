@@ -37,7 +37,7 @@ async function addSeomjibAgi() {
         );
 
         const songId = songResult.rows[0].id;
-        console.log(`✓ Song added/updated with ID: ${songId}`);
+        console.log(` Song added/updated with ID: ${songId}`);
 
         await db.query(
             `DELETE FROM lyrics WHERE song_id = $1`,

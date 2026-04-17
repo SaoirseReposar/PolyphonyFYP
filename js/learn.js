@@ -1,19 +1,13 @@
-// js/learn.js - Song Learning Page Logic
 const API_BASE_URL = '/api';
 
-// Global state
 let currentSong = null;
 let savedWords = new Set();
 let currentLineIndex = -1;
 
-// Spotify Player (using HTML5 audio for preview, or Spotify SDK for full tracks)
 const audioPlayer = document.getElementById('audioPlayer');
 
-/**
- * Initialize the page when it loads
- */
+
 async function init() {
-    // Get song ID from URL parameter
     const urlParams = new URLSearchParams(window.location.search);
     const songId = urlParams.get('id');
     
@@ -25,9 +19,7 @@ async function init() {
     await loadSong(songId);
 }
 
-/**
- * Load song data from API
- */
+
 async function loadSong(songId) {
     try {
         showLoading('Loading song...');
@@ -45,7 +37,6 @@ async function loadSong(songId) {
 };
 
         
-        // Update page UI
         updateSongHeader();
         initializeLyrics();
         setupAudioPlayer();
@@ -57,14 +48,11 @@ async function loadSong(songId) {
     }
 }
 
-/**
- * Update song header with metadata
- */
+
 function updateSongHeader() {
     document.getElementById('songTitle').textContent = currentSong.title;
     document.getElementById('songArtist').textContent = currentSong.artist;
     
-    // Update language badge
     const languageBadge = document.getElementById('languageBadge');
     const languageIcons = {
         'spanish': '🇪🇸',
@@ -74,12 +62,10 @@ function updateSongHeader() {
     };
     languageBadge.innerHTML = `${languageIcons[currentSong.language] || '🌍'} ${capitalize(currentSong.language)}`;
     
-    // Update difficulty badge
     const difficultyBadge = document.getElementById('difficultyBadge');
     difficultyBadge.textContent = capitalize(currentSong.difficulty);
     difficultyBadge.className = `badge badge-difficulty difficulty-${currentSong.difficulty}`;
     
-    // Update page title
     document.title = `${currentSong.title} - Learn - Polyphony`;
 
     const songHeaderImage = document.querySelector('.song-header-image');
@@ -88,9 +74,7 @@ function updateSongHeader() {
     }
 }
 
-/**
- * Initialize lyrics panel with clickable words
- */
+
 function initializeLyrics() {
     const lyricsPanel = document.getElementById('lyricsPanel');
     lyricsPanel.innerHTML = '';
@@ -106,10 +90,8 @@ function initializeLyrics() {
         lineDiv.dataset.index = index;
         lineDiv.dataset.timestamp = line.timestamp_ms;
         
-        // Create container for original text
         const originalTextDiv = document.createElement('div');
         
-        // Split line into words and make them clickable
         const words = line.original_text.split(' ');
         words.forEach((word, wordIndex) => {
             const wordSpan = document.createElement('span');
@@ -121,7 +103,6 @@ function initializeLyrics() {
             };
             originalTextDiv.appendChild(wordSpan);
             
-            // Add space after word (except last word)
             if (wordIndex < words.length - 1) {
                 originalTextDiv.appendChild(document.createTextNode(' '));
             }
@@ -129,12 +110,11 @@ function initializeLyrics() {
         
         lineDiv.appendChild(originalTextDiv);
         
-        // Add translation below the original text (hidden by default with inline style)
         if (line.translated_text) {
             const translationDiv = document.createElement('div');
             translationDiv.className = 'lyric-line-translation';
             translationDiv.textContent = line.translated_text;
-            translationDiv.style.display = 'none'; // Hide by default with inline style
+            translationDiv.style.display = 'none'; 
             lineDiv.appendChild(translationDiv);
         }
         
@@ -142,9 +122,7 @@ function initializeLyrics() {
     });
 }
 
-/**
- * Setup audio player
- */
+
 function setupAudioPlayer() {
     if (currentSong.audio_url) {
         audioPlayer.src = currentSong.audio_url;
@@ -171,9 +149,6 @@ function setupAudioPlayer() {
 }
 
 
-/**
- * Toggle play/pause
- */
 function togglePlay() {
     const playBtn = document.getElementById('playBtn');
     
@@ -186,9 +161,7 @@ function togglePlay() {
     }
 }
 
-/**
- * Restart song
- */
+
 function restart() {
     audioPlayer.currentTime = 0;
     currentLineIndex = -1;
@@ -199,9 +172,7 @@ function restart() {
     document.getElementById('playBtn').innerHTML = '<i class="bi bi-pause-fill"></i>';
 }
 
-/**
- * Change playback speed
- */
+
 function changeSpeed() {
     const speeds = [0.75, 1.0, 1.25, 1.5];
     const currentSpeed = audioPlayer.playbackRate;
@@ -212,30 +183,22 @@ function changeSpeed() {
     document.getElementById('speedDisplay').textContent = speeds[nextIndex] + 'x';
 }
 
-/**
- * Update progress bar
- */
+
 function updateProgress() {
     const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
     document.getElementById('progressFill').style.width = progress + '%';
     
-    // Update current time display
     document.getElementById('currentTime').textContent = formatTime(audioPlayer.currentTime);
     
-    // Update lyric highlight
     updateLyricHighlight();
 }
 
-/**
- * Update duration display
- */
+
 function updateDuration() {
     document.getElementById('totalTime').textContent = formatTime(audioPlayer.duration);
 }
 
-/**
- * Seek to position in song
- */
+
 function seek(event) {
     const progressBar = event.currentTarget;
     const clickX = event.offsetX;
@@ -243,9 +206,7 @@ function seek(event) {
     audioPlayer.currentTime = (clickX / width) * audioPlayer.duration;
 }
 
-/**
- * Update highlighted lyric line
- */
+
 function updateLyricHighlight() {
     const currentTimeMs = audioPlayer.currentTime * 1000;
     const lyrics = currentSong.lyrics;
@@ -259,7 +220,6 @@ function updateLyricHighlight() {
         
         if (currentTimeMs >= startTime && currentTimeMs < endTime) {
             if (currentLineIndex !== i) {
-                // Remove active class and hide translations from all lines
                 document.querySelectorAll('.lyric-line').forEach(line => {
                     line.classList.remove('active');
                     const translation = line.querySelector('.lyric-line-translation');
@@ -268,13 +228,11 @@ function updateLyricHighlight() {
                     }
                 });
                 
-                // Add active class to current line
                 const currentLine = document.querySelector(`[data-index="${i}"]`);
                 if (currentLine) {
                     currentLine.classList.add('active');
                     currentLine.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     
-                    // Show translation for active line
                     const translation = currentLine.querySelector('.lyric-line-translation');
                     if (translation) {
                         translation.style.display = 'block';
@@ -289,9 +247,6 @@ function updateLyricHighlight() {
 }
 
 
-/**
- * Handle word click
- */
 async function handleWordClick(word, sentence) {
     try {
         showTranslationLoading();
@@ -319,9 +274,7 @@ async function handleWordClick(word, sentence) {
     }
 }
 
-/**
- * Display word translation
- */
+
 function displayTranslation(word, translation) {
     const translationPanel = document.getElementById('translationPanel');
     
@@ -336,16 +289,12 @@ function displayTranslation(word, translation) {
     `;
 }
 
-/**
- * Save word to vocabulary
- */
+
 async function saveWord(word, translationText) {
-    // Add to local display immediately (optimistic update)
     word = word.replace(/[^\p{L}]/gu, '');
     savedWords.add(`${word} = ${translationText}`);
     updateSavedWordsDisplay();
 
-    // Persist to database
     try {
         const response = await fetch('/api/dashboard/saved-words', {
             method: 'POST',
@@ -371,9 +320,7 @@ async function saveWord(word, translationText) {
 }
 
 
-/**
- * Update saved words display
- */
+
 function updateSavedWordsDisplay() {
     const display = document.getElementById('savedWordsDisplay');
     
@@ -391,9 +338,7 @@ function updateSavedWordsDisplay() {
     });
 }
 
-/**
- * Handle song end
- */
+
 function onSongEnd() {
     document.getElementById('playBtn').innerHTML = '<i class="bi bi-play-fill"></i>';
     currentLineIndex = -1;
@@ -402,7 +347,6 @@ function onSongEnd() {
     });
 }
 
-// Utility functions
 function formatTime(seconds) {
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
@@ -414,17 +358,15 @@ function capitalize(str) {
 }
 
 function showLoading(message) {
-    // Implement loading indicator
     console.log('Loading:', message);
 }
 
 function hideLoading() {
-    // Hide loading indicator
     console.log('Loading complete');
 }
 
 function showError(message) {
-    alert(message); // Replace with better UI
+    alert(message); 
 }
 
 function showTranslationLoading() {
@@ -446,9 +388,7 @@ function showTranslationError() {
 }
 
 function showNotification(message, type = 'success') {
-    // Implement toast notification
     console.log(`[${type}] ${message}`);
 }
 
-// Initialize on page load
 window.addEventListener('DOMContentLoaded', init);

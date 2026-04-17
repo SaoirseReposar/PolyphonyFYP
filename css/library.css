@@ -1,6 +1,4 @@
-/* =================================
-   Library Header Section
-   ================================= */
+
 .library-header {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
@@ -19,9 +17,7 @@
     margin: 0;
 }
 
-/* =================================
-   Filter and Search Section
-   ================================= */
+
 .filter-section {
     background: white;
     padding: 2rem 0;
@@ -84,7 +80,6 @@
     margin-right: 0.5rem;
 }
 
-/* Checkbox styling */
 .filter-menu label {
     cursor: pointer;
     display: flex;
@@ -122,7 +117,6 @@
     }
 }
 
-/* Clear filters button */
 #clearFilters {
     color: #ef4444;
     transition: all 0.2s ease;
@@ -161,15 +155,12 @@
     font-size: 1.25rem;
 }
 
-/* =================================
-   Songs Section
-   ================================= */
+
 .songs-section {
     background: #f5f7fa;
     padding: 3rem 0 5rem 0;
 }
 
-/* Song Card Styles */
 .song-card {
     background: white;
     border-radius: 16px;
@@ -194,7 +185,6 @@
     overflow: hidden;
 }
 
-/* Image fills the square perfectly */
 .song-image img {
     position: absolute;
     inset: 0;
@@ -204,7 +194,6 @@
     display: block;
 }
 
-/* Icon fallback (when no image) */
 .song-image i {
     position: absolute;
     inset: 0;
@@ -244,7 +233,6 @@
     flex-wrap: wrap;
 }
 
-/* Badge Styles */
 .badge {
     font-size: 0.875rem;
     padding: 0.375rem 0.75rem;
@@ -273,7 +261,6 @@
     background: #ef4444;
 }
 
-/* Play Button */
 .btn-play {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
@@ -297,11 +284,7 @@
     font-size: 1.125rem;
 }
 
-/* =================================
-   Responsive Design
-   ================================= */
 
-/* Tablets */
 @media (max-width: 991px) {
     .library-title {
         font-size: 2rem;
@@ -312,7 +295,6 @@
     }
 }
 
-/* Mobile phones */
 @media (max-width: 767px) {
     .library-header {
         padding: 2rem 0 1.5rem 0;
@@ -343,7 +325,6 @@
     }
 }
 
-/* Small mobile phones */
 @media (max-width: 575px) {
     .library-title {
         font-size: 1.5rem;
@@ -365,14 +346,13 @@
     }
 }
 
-/* 
-   Spotify Connect Bar */
+
 .spotify-connect-bar {
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.08), rgba(30, 215, 96, 0.08));
     border: 1.5px solid rgba(30, 215, 96, 0.3);
     border-radius: 14px;
     padding: 1rem 1.5rem;
-    display: inline-flex;  /* key change — shrinks to content width */
+    display: inline-flex;  
 }
 
 .spotify-icon-wrap {

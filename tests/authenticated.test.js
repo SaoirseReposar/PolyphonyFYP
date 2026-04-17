@@ -38,9 +38,8 @@ async function getLoggedInAgent() {
     return agent;
 }
 
-// ─────────────────────────────────────────────
+
 // LOGIN
-// ─────────────────────────────────────────────
 describe('Login', () => {
 
     // A correct email and password should log the user in
@@ -64,9 +63,8 @@ describe('Login', () => {
 
 });
 
-// ─────────────────────────────────────────────
+
 // PROTECTED PAGES
-// ─────────────────────────────────────────────
 describe('Protected Pages Load After Login', () => {
 
     // A logged in user should reach the dashboard, not be sent away
@@ -92,9 +90,8 @@ describe('Protected Pages Load After Login', () => {
 
 });
 
-// ─────────────────────────────────────────────
+
 // SONG LOADING
-// ─────────────────────────────────────────────
 describe('Song Loading', () => {
 
     // Loading a song should return the song details and its lyrics
@@ -136,9 +133,8 @@ describe('Song Loading', () => {
 
 });
 
-// ─────────────────────────────────────────────
+
 // VOCABULARY SAVING
-// ─────────────────────────────────────────────
 describe('Saving Vocabulary', () => {
 
     // Clicking a word and saving it should succeed
@@ -154,7 +150,6 @@ describe('Saving Vocabulary', () => {
     });
 
     // A saved word should show up in the vocabulary list on the dashboard.
-    // Your API returns the list directly as res.body, with each word under w.word
     test('Saved word appears in the vocabulary list', async () => {
         const agent = await getLoggedInAgent();
         await agent.post('/api/dashboard/saved-words').send({
@@ -164,7 +159,6 @@ describe('Saving Vocabulary', () => {
         });
         const res = await agent.get('/api/dashboard/saved-words');
         expect(res.statusCode).toBe(200);
-        // Try both response shapes in case your API wraps the array or returns it directly
         const words = res.body.words || res.body.savedWords || res.body;
         const found = Array.isArray(words) && words.some(w =>
             w.word === 'maíz' || w.original_word === 'maíz'
@@ -181,13 +175,11 @@ describe('Saving Vocabulary', () => {
 
 });
 
-// ─────────────────────────────────────────────
+
 // DASHBOARD STATS
-// ─────────────────────────────────────────────
 describe('Dashboard Stats', () => {
 
     // The stats card on the dashboard needs a word count to display.
-    // Your API returns this as "savedWords" (e.g. { savedWords: 2, songsCompleted: 0 })
     test('Stats include a saved words count', async () => {
         const agent = await getLoggedInAgent();
         const res = await agent.get('/api/dashboard/stats');
@@ -205,21 +197,18 @@ describe('Dashboard Stats', () => {
     });
 
     // The recently played section needs an array of songs to show.
-    // Your API returns the array directly in res.body (not wrapped in a key)
     test('Recent songs returns an array', async () => {
         const agent = await getLoggedInAgent();
         const res = await agent.get('/api/dashboard/recent-songs');
         expect(res.statusCode).toBe(200);
-        // Try both shapes in case your API wraps the array or returns it directly
         const songs = res.body.songs || res.body.recentSongs || res.body;
         expect(Array.isArray(songs)).toBe(true);
     });
 
 });
 
-// ─────────────────────────────────────────────
+
 // LOGOUT
-// ─────────────────────────────────────────────
 describe('Logout', () => {
 
     // After logging out the session should be gone and the API should say so

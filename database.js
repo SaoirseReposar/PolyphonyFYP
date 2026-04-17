@@ -1,4 +1,4 @@
-// database.js - Database Configuration
+// Database Configuration
 const { Pool } = require('pg');
 require('dotenv').config();
 

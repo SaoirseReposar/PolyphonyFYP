@@ -1,10 +1,9 @@
-// services/translationService.js - DeepL Translation Service
 const deepl = require('deepl-node');
 require('dotenv').config();
 
 const translator = new deepl.Translator(process.env.DEEPL_API_KEY);
 
-// Language code mapping (Spotify/Your format → DeepL format)
+// Language code mapping 
 const languageMap = {
     'spanish': 'ES',
     'french': 'FR',
@@ -15,10 +14,10 @@ const languageMap = {
 
 /**
  * Translate a single text
- * @param {string} text - Text to translate
- * @param {string} sourceLang - Source language code
- * @param {string} targetLang - Target language code (default: EN-US)
- * @returns {Promise<string>} - Translated text
+ * @param {string} text 
+ * @param {string} sourceLang 
+ * @param {string} targetLang 
+ * @returns {Promise<string>} 
  */
 async function translateText(text, sourceLang, targetLang = 'EN-US') {
     try {
@@ -33,10 +32,10 @@ async function translateText(text, sourceLang, targetLang = 'EN-US') {
 
 /**
  * Translate multiple texts in batch (more efficient)
- * @param {Array<string>} texts - Array of texts to translate
- * @param {string} sourceLang - Source language code
- * @param {string} targetLang - Target language code
- * @returns {Promise<Array<string>>} - Array of translated texts
+ * @param {Array<string>} texts 
+ * @param {string} sourceLang 
+ * @param {string} targetLang 
+ * @returns {Promise<Array<string>>} 
  */
 async function translateBatch(texts, sourceLang, targetLang = 'EN-US') {
     try {
@@ -51,19 +50,17 @@ async function translateBatch(texts, sourceLang, targetLang = 'EN-US') {
 
 /**
  * Translate a single word with context
- * @param {string} word - Word to translate
- * @param {string} sourceLang - Source language
- * @param {string} sentence - Context sentence (optional)
- * @returns {Promise<Object>} - Translation with context
+ * @param {string} word 
+ * @param {string} sourceLang
+ * @param {string} sentence
+ * @returns {Promise<Object>} 
  */
 async function translateWord(word, sourceLang, sentence = null, targetLang = 'EN-US') {
     try {
         const sourceCode = languageMap[sourceLang.toLowerCase()] || sourceLang.toUpperCase();
         
-        // Translate the word
         const wordTranslation = await translator.translateText(word, sourceCode, targetLang);
         
-        // If sentence provided, translate it for context
         let context = null;
         if (sentence) {
             const sentenceTranslation = await translator.translateText(sentence, sourceCode, targetLang);
@@ -83,7 +80,7 @@ async function translateWord(word, sourceLang, sentence = null, targetLang = 'EN
 
 /**
  * Get usage information from DeepL API
- * @returns {Promise<Object>} - Usage statistics
+ * @returns {Promise<Object>}
  */
 async function getUsage() {
     try {

@@ -33,7 +33,7 @@ async function addLosPollitos() {
         );
         
         const songId = songResult.rows[0].id;
-        console.log(`✓ Song added/updated with ID: ${songId}`);
+        console.log(` Song added/updated with ID: ${songId}`);
         
         const lyrics = [
             { line: 1, time: 12, text: "Los pollitos dicen" },

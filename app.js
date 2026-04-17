@@ -42,7 +42,6 @@ function isAuthenticated(req, res, next) {
 
 // SPOTIFY OAUTH ROUTES
 
-// Redirect user to Spotify authorization page
 app.get('/spotify/login', isAuthenticated, (req, res) => {
     req.session.spotifyConnectOrigin = req.headers.referer?.includes('library') ? '/library.html' : '/';
 

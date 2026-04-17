@@ -1,6 +1,6 @@
 const lrclibService = require('../services/lrclibService');
 const db = require('../database');
-const translationService = require('../services/translationService');
+const Translationservice = require('../services/Translationservice');
 
 async function autoImportSong() {
     const trackName = process.argv[2];
@@ -74,7 +74,7 @@ async function autoImportSong() {
         
         console.log('Step 3: Translating lyrics with DeepL...');
         const textsToTranslate = lyrics.map(l => l.text);
-        const translations = await translationService.translateBatch(textsToTranslate, language, 'EN-US');
+        const translations = await Translationservice.translateBatch(textsToTranslate, language, 'EN-US');
         console.log(`✅ Translated ${lyrics.length} lines\n`);
         
         console.log('Step 4: Saving lyrics to database...');

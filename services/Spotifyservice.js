@@ -1,4 +1,3 @@
-// services/spotifyService.js - Spotify API Service
 const SpotifyWebApi = require('spotify-web-api-node');
 require('dotenv').config();
 
@@ -8,16 +7,14 @@ const spotifyApi = new SpotifyWebApi({
     redirectUri: process.env.SPOTIFY_REDIRECT_URI
 });
 
-// Token management
 let accessToken = null;
 let tokenExpirationTime = null;
 
 /**
  * Get or refresh access token
- * @returns {Promise<string>} - Access token
+ * @returns {Promise<string>} 
  */
 async function getAccessToken() {
-    // Check if token is still valid
     if (accessToken && tokenExpirationTime && Date.now() < tokenExpirationTime) {
         return accessToken;
     }
@@ -25,7 +22,7 @@ async function getAccessToken() {
     try {
         const data = await spotifyApi.clientCredentialsGrant();
         accessToken = data.body['access_token'];
-        tokenExpirationTime = Date.now() + (data.body['expires_in'] * 1000) - 60000; // Refresh 1 min early
+        tokenExpirationTime = Date.now() + (data.body['expires_in'] * 1000) - 60000; 
         
         spotifyApi.setAccessToken(accessToken);
         console.log('✓ Spotify access token refreshed');
@@ -39,8 +36,8 @@ async function getAccessToken() {
 
 /**
  * Get track information by Spotify Track ID
- * @param {string} trackId - Spotify Track ID
- * @returns {Promise<Object>} - Track information
+ * @param {string} trackId  
+ * @returns {Promise<Object>} 
  */
 async function getTrackInfo(trackId) {
     try {
@@ -66,8 +63,8 @@ async function getTrackInfo(trackId) {
 
 /**
  * Search for a track
- * @param {string} query - Search query (song name, artist, etc.)
- * @returns {Promise<Array>} - Array of track results
+ * @param {string} query 
+ * @returns {Promise<Array>} 
  */
 async function searchTracks(query) {
     try {
@@ -92,8 +89,8 @@ async function searchTracks(query) {
 
 /**
  * Get audio analysis for a track (tempo, key, etc.)
- * @param {string} trackId - Spotify Track ID
- * @returns {Promise<Object>} - Audio analysis
+ * @param {string} trackId 
+ * @returns {Promise<Object>} 
  */
 async function getAudioAnalysis(trackId) {
     try {
@@ -108,7 +105,7 @@ async function getAudioAnalysis(trackId) {
 
 /**
  * Get authorization URL for user login (if needed later)
- * @returns {string} - Authorization URL
+ * @returns {string} 
  */
 function getAuthorizationUrl() {
     const scopes = ['streaming', 'user-read-email', 'user-read-private'];

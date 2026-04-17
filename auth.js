@@ -1,22 +1,19 @@
-// Authentication Logic
 // Handles user registration and login
 
 const bcrypt = require('bcrypt');
 const pool = require('./database');
 
-// Number of salt rounds for password hashing (higher = more secure but slower)
 const SALT_ROUNDS = 10;
 
 /**
  * Register a new user
- * @param {Object} userData - User registration data
- * @returns {Object} - Success status and message or error
+ * @param {Object} userData 
+ * @returns {Object} 
  */
 async function registerUser(userData) {
     const { firstName, lastName, username, email, password } = userData;
 
     try {
-        // Check if email already exists
         const emailCheck = await pool.query(
             'SELECT email FROM Users WHERE email = $1',
             [email]
@@ -26,7 +23,6 @@ async function registerUser(userData) {
             return { success: false, message: 'Email already registered' };
         }
 
-        // Check if username already exists
         const usernameCheck = await pool.query(
             'SELECT username FROM Users WHERE username = $1',
             [username]
@@ -36,7 +32,6 @@ async function registerUser(userData) {
             return { success: false, message: 'Username already taken' };
         }
 
-        // Hash the password for security
         const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
 
         const result = await pool.query(
@@ -60,33 +55,29 @@ async function registerUser(userData) {
 
 /**
  * Login a user
- * @param {string} email - User's email
- * @param {string} password - User's password
- * @returns {Object} - Success status and user data or error
+ * @param {string} email 
+ * @param {string} password 
+ * @returns {Object} 
  */
 async function loginUser(email, password) {
     try {
-        // Find user by email
         const result = await pool.query(
             'SELECT user_id, first_name, last_name, username, email, password FROM Users WHERE email = $1',
             [email]
         );
 
-        // Check if user exists
         if (result.rows.length === 0) {
             return { success: false, message: 'Invalid email or password' };
         }
 
         const user = result.rows[0];
 
-        // Compare provided password with hashed password in database
         const passwordMatch = await bcrypt.compare(password, user.password);
 
         if (!passwordMatch) {
             return { success: false, message: 'Invalid email or password' };
         }
 
-        // Remove password from user object before returning
         delete user.password;
 
         return {

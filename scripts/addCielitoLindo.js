@@ -58,7 +58,7 @@ async function addCielitoLindo() {
         const textsToTranslate = lyrics.map(l => l.text);
         const translations = await translationService.translateBatch(textsToTranslate, 'spanish', 'EN-US');
         
-        console.log('✓ Translations received\n');
+        console.log(' Translations received\n');
         
         for (let i = 0; i < lyrics.length; i++) {
             const lyric = lyrics[i];

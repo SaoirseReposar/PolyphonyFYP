@@ -1,9 +1,7 @@
 // Authentication JavaScript for Register/Login Page
-// This file handles form switching and authentication requests
 
-// Wait for DOM to be fully loaded
+
 document.addEventListener('DOMContentLoaded', function() {
-    // Get form elements
     const registerForm = document.getElementById('registerForm');
     const loginForm = document.getElementById('loginForm');
     const registrationFormElement = document.getElementById('registrationForm');
@@ -17,7 +15,6 @@ document.addEventListener('DOMContentLoaded', function() {
         window.history.replaceState({}, document.title, window.location.pathname);
     }
 
-    // Add event listeners for form switching
     switchToLoginLink.addEventListener('click', function(e) {
         e.preventDefault();
         switchToLogin();
@@ -28,23 +25,19 @@ document.addEventListener('DOMContentLoaded', function() {
         switchToRegister();
     });
 
-    // Add event listeners for form submissions
     registrationFormElement.addEventListener('submit', handleRegistration);
     loginFormElement.addEventListener('submit', handleLogin);
 });
 
-/**
- * Switch to login form view
- */
+
+
 function switchToLogin() {
     document.getElementById('registerForm').style.display = 'none';
     document.getElementById('loginForm').style.display = 'block';
     hideAlert();
 }
 
-/**
- * Switch to register form view
- */
+
 function switchToRegister() {
     document.getElementById('loginForm').style.display = 'none';
     document.getElementById('registerForm').style.display = 'block';
@@ -53,8 +46,8 @@ function switchToRegister() {
 
 /**
  * Show alert message to user
- * @param {string} message - Message to display
- * @param {string} type - Alert type (success, danger, warning, etc.)
+ * @param {string} message 
+ * @param {string} type
  */
 function showAlert(message, type) {
     const alertDiv = document.getElementById('alertMessage');
@@ -63,9 +56,7 @@ function showAlert(message, type) {
     alertDiv.classList.remove('d-none');
 }
 
-/**
- * Hide alert message
- */
+
 function hideAlert() {
     const alertDiv = document.getElementById('alertMessage');
     alertDiv.classList.add('d-none');
@@ -73,17 +64,15 @@ function hideAlert() {
 
 /**
  * Handle registration form submission
- * @param {Event} e - Form submit event
+ * @param {Event} e 
  */
 async function handleRegistration(e) {
     e.preventDefault();
     
-    // Get form data
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData);
 
     try {
-        // Send registration request to server
         const response = await fetch('/register', {
             method: 'POST',
             headers: {
@@ -95,18 +84,14 @@ async function handleRegistration(e) {
         const result = await response.json();
 
         if (result.success) {
-            // Show success message
             showAlert(result.message, 'success');
-            // Redirect to profile page after short delay
             setTimeout(() => {
                 window.location.href = result.redirectUrl;
             }, 1500);
         } else {
-            // Show error message
             showAlert(result.message, 'danger');
         }
     } catch (error) {
-        // Show generic error message
         showAlert('An error occurred. Please try again.', 'danger');
         console.error('Registration error:', error);
     }
@@ -114,7 +99,7 @@ async function handleRegistration(e) {
 
 /**
  * Handle login form submission
- * @param {Event} e - Form submit event
+ * @param {Event} e 
  */
 async function handleLogin(e) {
     e.preventDefault();
@@ -124,7 +109,6 @@ async function handleLogin(e) {
     const data = Object.fromEntries(formData);
 
     try {
-        // Send login request to server
         const response = await fetch('/login', {
             method: 'POST',
             headers: {
@@ -136,18 +120,14 @@ async function handleLogin(e) {
         const result = await response.json();
 
         if (result.success) {
-            // Show success message
             showAlert(result.message, 'success');
-            // Redirect to profile page after short delay
             setTimeout(() => {
                 window.location.href = result.redirectUrl;
             }, 1500);
         } else {
-            // Show error message
             showAlert(result.message, 'danger');
         }
     } catch (error) {
-        // Show generic error message
         showAlert('An error occurred. Please try again.', 'danger');
         console.error('Login error:', error);
     }

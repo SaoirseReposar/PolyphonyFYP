@@ -69,7 +69,7 @@ async function addThreeBearsSong() {
             'EN-US'
         );
 
-        console.log('✓ Translations received\n');
+        console.log(' Translations received\n');
 
         let translationIndex = 0;
         for (let lyric of lyrics) {
