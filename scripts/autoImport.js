@@ -1,6 +1,6 @@
 const lrclibService = require('../services/lrclibService');
 const db = require('../database');
-const Translationservice = require('../services/Translationservice');
+const Translationservice = require('../services/translationService');
 
 async function autoImportSong() {
     const trackName = process.argv[2];

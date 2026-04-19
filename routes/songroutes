@@ -1,9 +1,11 @@
-// routes/songRoutes.js - Song and Lyrics API Routes
 const express = require('express');
 const router = express.Router();
 const db = require('../database');
 const translationService = require('../services/translationService');
 const spotifyService = require('../services/spotifyService');
+const lrclibService = require('../services/lrclibService');
+const { classifySong } = require('../services/classificationService');
+const axios = require('axios');
 
 
 router.get('/songs', async (req, res) => {
@@ -30,6 +32,15 @@ router.get('/songs/:id', async (req, res) => {
         
         if (songResult.rows.length === 0) {
             return res.status(404).json({ success: false, error: 'Song not found' });
+        }
+
+        if (req.session && req.session.user) {
+            db.query(
+                `INSERT INTO user_song_progress (user_id, song_id, last_accessed, completed)
+                 VALUES ($1, $2, NOW(), true)
+                 ON CONFLICT (user_id, song_id) DO UPDATE SET last_accessed = NOW(), completed = true`,
+                [req.session.user.user_id, id]
+            ).catch(err => console.error('Progress tracking error:', err));
         }
         
         const lyricsResult = await db.query(
@@ -115,6 +126,87 @@ router.post('/songs', async (req, res) => {
 });
 
 
+router.post('/songs/import', async (req, res) => {
+    const { spotifyTrackId, trackName, artistName, albumArtUrl, durationMs, availableMarkets = [], spotifyToken } = req.body;
+
+    if (!spotifyTrackId || !trackName || !artistName) {
+        return res.status(400).json({ success: false, error: 'Missing required fields' });
+    }
+
+    console.log(`\n🎵 Auto-importing "${trackName}" by ${artistName}...`);
+
+    try {
+        const existing = await db.query('SELECT id FROM songs WHERE spotify_track_id = $1', [spotifyTrackId]);
+        if (existing.rows.length > 0) {
+            return res.json({ success: true, songId: existing.rows[0].id, alreadyExists: true });
+        }
+
+        const lyricsData = await lrclibService.getSyncedLyrics(trackName, artistName);
+        if (!lyricsData || !lyricsData.syncedLyrics) {
+            return res.status(422).json({ success: false, error: 'no_lyrics', message: `No synced lyrics found for "${trackName}" on LRCLIB.` });
+        }
+
+        const parsedLyrics = lrclibService.parseLRC(lyricsData.syncedLyrics);
+
+        let audioFeatures = null;
+        if (spotifyToken) {
+            try {
+                const afRes = await axios.get(`https://api.spotify.com/v1/audio-features/${spotifyTrackId}`, {
+                    headers: { Authorization: `Bearer ${spotifyToken}` }
+                });
+                audioFeatures = afRes.data;
+            } catch (e) { /* non-fatal */ }
+        }
+
+        const classification = classifySong({
+            plainLyrics: lyricsData.plainLyrics || parsedLyrics.map(l => l.text).join('\n'),
+            parsedLyrics,
+            audioFeatures,
+            availableMarkets
+        });
+
+        if (!classification.language || !['spanish','french','german','korean','japanese','portuguese','italian'].includes(classification.language)) {
+            return res.status(422).json({ success: false, error: 'unsupported_language', detectedLanguage: classification.language });
+        }
+
+        const songResult = await db.query(
+            `INSERT INTO songs (spotify_track_id, title, artist, language, difficulty, duration_ms, album_art_url, tags, difficulty_score)
+             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
+             ON CONFLICT (spotify_track_id) DO UPDATE SET title=EXCLUDED.title, updated_at=CURRENT_TIMESTAMP
+             RETURNING id`,
+            [spotifyTrackId, trackName, artistName, classification.language, classification.difficulty,
+             durationMs || (lyricsData.duration * 1000) || 180000, albumArtUrl || null,
+             classification.mood || null, classification.difficultyScore]
+        );
+
+        const songId = songResult.rows[0].id;
+        const textsToTranslate = parsedLyrics.map(l => l.text);
+        let translations;
+        try {
+            translations = await translationService.translateBatch(textsToTranslate, classification.language, 'EN-US');
+        } catch (e) {
+            translations = textsToTranslate.map(() => null);
+        }
+
+        for (let i = 0; i < parsedLyrics.length; i++) {
+            await db.query(
+                `INSERT INTO lyrics (song_id, line_number, timestamp_ms, original_text, translated_text, language_to)
+                 VALUES ($1,$2,$3,$4,$5,$6)
+                 ON CONFLICT (song_id, line_number) DO UPDATE SET
+                    timestamp_ms=EXCLUDED.timestamp_ms, original_text=EXCLUDED.original_text, translated_text=EXCLUDED.translated_text`,
+                [songId, parsedLyrics[i].line, Math.round(parsedLyrics[i].time * 1000), parsedLyrics[i].text, translations[i] || null, 'en']
+            );
+        }
+
+        console.log(` Import complete: "${trackName}" (id: ${songId})`);
+        res.json({ success: true, songId, classification });
+
+    } catch (error) {
+        console.error(' Import error:', error);
+        res.status(500).json({ success: false, error: 'import_failed', message: error.message });
+    }
+});
+
 router.post('/songs/:id/lyrics', async (req, res) => {
     try {
         const { id } = req.params;
@@ -196,7 +288,7 @@ router.post('/translate/word', async (req, res) => {
             'EN-US'
         );
         
-e
+
         const insertResult = await db.query(
             `INSERT INTO word_translations (word, source_language, target_language, translation, context)
              VALUES ($1, $2, $3, $4, $5)

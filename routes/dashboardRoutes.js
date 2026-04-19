@@ -21,7 +21,7 @@ router.get('/stats', requireAuth, async (req, res) => {
             db.query(
                 `SELECT COUNT(DISTINCT song_id) AS count 
                  FROM user_song_progress 
-                 WHERE user_id = $1 AND completed = true`,
+                 WHERE user_id = $1`,
                 [userId]
             )
         ]);

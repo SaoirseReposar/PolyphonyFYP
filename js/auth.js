@@ -1,5 +1,3 @@
-// Authentication JavaScript for Register/Login Page
-
 
 document.addEventListener('DOMContentLoaded', function() {
     const registerForm = document.getElementById('registerForm');

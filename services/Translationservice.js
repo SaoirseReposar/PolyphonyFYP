@@ -3,7 +3,7 @@ require('dotenv').config();
 
 const translator = new deepl.Translator(process.env.DEEPL_API_KEY);
 
-// Language code mapping 
+
 const languageMap = {
     'spanish': 'ES',
     'french': 'FR',

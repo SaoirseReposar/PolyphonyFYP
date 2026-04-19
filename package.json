@@ -4,12 +4,12 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-  "test": "jest",
-  "test:watch": "jest --watch",
-  "test:coverage": "jest --coverage",
-  "start": "node app.js",
-  "api": "node server.js"
-},
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "start": "node app.js",
+    "api": "node server.js"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -22,6 +22,7 @@
     "dotenv": "^16.3.1",
     "express": "^5.1.0",
     "express-session": "^1.17.3",
+    "franc": "^6.2.0",
     "pg": "^8.11.3",
     "spotify-web-api-node": "^5.0.2"
   },
@@ -29,5 +30,4 @@
     "jest": "^30.3.0",
     "supertest": "^7.2.2"
   }
-  
 }

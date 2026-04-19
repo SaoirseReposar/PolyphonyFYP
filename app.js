@@ -6,10 +6,11 @@ const querystring = require('querystring');
 const axios = require('axios');
 const { registerUser, loginUser } = require('./auth');
 const db = require('./database');
-const translationService = require('./services/Translationservice');
+const translationService = require('./services/translationService');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const dashboardRoutes = require('./routes/dashboardRoutes');
+const songRoutes = require('./routes/songRoutes');
 
 
 const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
@@ -31,6 +32,7 @@ app.use(session({
 }));
 
 app.use('/api/dashboard', dashboardRoutes);
+app.use('/api', songRoutes); 
 
 function isAuthenticated(req, res, next) {
     if (req.session.user) {
@@ -45,7 +47,7 @@ function isAuthenticated(req, res, next) {
 app.get('/spotify/login', isAuthenticated, (req, res) => {
     req.session.spotifyConnectOrigin = req.headers.referer?.includes('library') ? '/library.html' : '/';
 
-    const scope = 'user-read-private user-read-email playlist-read-private playlist-read-collaborative';
+    const scope = 'user-read-private user-read-email playlist-read-private playlist-read-collaborative streaming user-modify-playback-state';
     
     const authUrl = 'https://accounts.spotify.com/authorize?' +
         querystring.stringify({
@@ -294,11 +296,11 @@ app.get('/api/songs/:id', async (req, res) => {
 
 if (req.session.user) {
     db.query(
-        `INSERT INTO user_song_progress (user_id, song_id, last_accessed)
-         VALUES ($1, $2, NOW())
-         ON CONFLICT (user_id, song_id) DO UPDATE SET last_accessed = NOW()`,
-        [req.session.user.user_id, songId]
-    ).catch(err => console.error('Progress tracking error:', err));
+    `INSERT INTO user_song_progress (user_id, song_id, last_accessed, completed)
+     VALUES ($1, $2, NOW(), true)
+     ON CONFLICT (user_id, song_id) DO UPDATE SET last_accessed = NOW(), completed = true`,
+    [req.session.user.user_id, songId]
+).catch(err => console.error('Progress tracking error:', err));
 }
 
         const song = songResult.rows[0];
