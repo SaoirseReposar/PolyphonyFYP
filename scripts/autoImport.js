@@ -1,6 +1,6 @@
 const lrclibService = require('../services/lrclibService');
 const db = require('../database');
-const Translationservice = require('../services/translationService');
+const Translationservice = require('../services/Translationservice');
 
 async function autoImportSong() {
     const trackName = process.argv[2];
@@ -11,7 +11,7 @@ async function autoImportSong() {
     const albumArtUrl = process.argv[7] || null;
     
     if (!trackName || !artistName || !language || !difficulty || !spotifyTrackId) {
-        console.log('\n📖 Universal Song Import Tool\n');
+        console.log('\n Universal Song Import Tool\n');
         console.log('Usage: node scripts/autoImport.js "Song Title" "Artist" language difficulty spotify_id [album_art]');
         console.log('\nExample:');
         console.log('  node scripts/autoImport.js "Despacito" "Luis Fonsi" spanish beginner 6habFhsOp2NvshLv26DqMb images/despacito.jpg');
@@ -27,15 +27,15 @@ async function autoImportSong() {
         const lyricsData = await lrclibService.getSyncedLyrics(trackName, artistName);
         
         if (!lyricsData || !lyricsData.syncedLyrics) {
-            console.log('❌ No synced lyrics found in LRCLIB');
-            console.log('\n📝 Manual entry required:');
+            console.log(' No synced lyrics found in LRCLIB');
+            console.log('\n Manual entry required:');
             console.log(`   1. Find lyrics online (Genius, AZLyrics)`);
             console.log(`   2. Get timestamps (LRC Maker: https://lrcmaker.com)`);
             console.log(`   3. Create manual script for this song`);
             process.exit(1);
         }
         
-        console.log('✅ Synced lyrics found!\n');
+        console.log(' Synced lyrics found!\n');
         
         const lyrics = lrclibService.parseLRC(lyricsData.syncedLyrics);
         console.log(`   Found ${lyrics.length} lines with timestamps`);
@@ -70,12 +70,12 @@ async function autoImportSong() {
         );
         
         const songId = songResult.rows[0].id;
-        console.log(`✅ Song saved with ID: ${songId}\n`);
+        console.log(` Song saved with ID: ${songId}\n`);
         
         console.log('Step 3: Translating lyrics with DeepL...');
         const textsToTranslate = lyrics.map(l => l.text);
         const translations = await Translationservice.translateBatch(textsToTranslate, language, 'EN-US');
-        console.log(`✅ Translated ${lyrics.length} lines\n`);
+        console.log(` Translated ${lyrics.length} lines\n`);
         
         console.log('Step 4: Saving lyrics to database...');
         for (let i = 0; i < lyrics.length; i++) {
@@ -103,17 +103,17 @@ async function autoImportSong() {
             );
         }
         
-        console.log('✅ All lyrics saved!\n');
+        console.log(' All lyrics saved!\n');
         
         const audioFileName = trackName.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
         
         console.log('═══════════════════════════════════════════════');
-        console.log('✅ Import Complete!');
+        console.log(' Import Complete!');
         console.log('═══════════════════════════════════════════════');
         console.log(`Song ID: ${songId}`);
         console.log(`Total lyrics: ${lyrics.length}`);
-        console.log(`Timestamps: ✅ Synced from LRCLIB`);
-        console.log(`Translations: ✅ Auto-translated with DeepL`);
+        console.log(`Timestamps: Synced from LRCLIB`);
+        console.log(`Translations:  Auto-translated with DeepL`);
         console.log('\n📋 Next Steps:');
         console.log(`   1. Add audio file: audio/${audioFileName}.mp3`);
         console.log(`   2. Test: http://localhost:3000/learn.html?id=${songId}`);
@@ -121,7 +121,7 @@ async function autoImportSong() {
         
         process.exit(0);
     } catch (error) {
-        console.error('\n❌ Error:', error.message);
+        console.error('\n Error:', error.message);
         process.exit(1);
     }
 }
